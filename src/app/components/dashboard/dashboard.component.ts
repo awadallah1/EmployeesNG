@@ -8,7 +8,6 @@ import { EmployeeService } from '../../services/employee.service';
 })
 export class DashboardComponent implements OnInit {
 
-
   constructor(public call:EmployeeService) { 
   
   }
