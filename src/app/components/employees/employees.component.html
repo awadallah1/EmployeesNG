@@ -1,8 +1,8 @@
-<div class="uk-container-center">
-  
+<ng-container *ngIf="employees.length>0; else elseTemplate">
+   
   <table class="table table-dark table-responsive-md">
     <thead>
-      <tr>
+      <tr class="text-center">
         <!-- <th scope="col">#</th> -->
         <th scope="col">First Name</th>
         <th scope="col">Last Name</th>
@@ -14,7 +14,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let employee of employees">
+      <tr  class="text-center" *ngFor="let employee of employees">
         <!-- <td>{{employee.$key}}</td> -->
         <td>{{employee.firstName}}</td>
         <td>{{employee.lastName}}</td>
@@ -23,8 +23,12 @@
         <td>{{employee.city}}</td>
         <td>{{employee.phone}}</td>
         <td>{{employee.salary}}</td>
+        <td><a style="margin-top: -2px;" href="" class="btn btn-primary">More <i class="fa fa-info-circle" aria-hidden="true"></i></a></td>
 
       </tr>
     </tbody>
   </table>
-</div>
+  </ng-container>
+  <ng-template  #elseTemplate>
+    <h2>Waitting for Employees.......</h2>
+  </ng-template>
