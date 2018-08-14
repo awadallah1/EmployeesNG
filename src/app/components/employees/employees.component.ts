@@ -23,7 +23,7 @@ export class EmployeesComponent implements OnInit {
           let y = action.payload.toJSON()
           y["$key"] = action.key
           this.employees.push(y as Employee)
-        }); this.getTotals();console.log(this.totalSalaries,this.totalEmployees)
+        }); this.getTotals();
       })
 
   }
