@@ -10,11 +10,35 @@ import { Employee } from "../../interfaces/Employee";
 })
 export class EmployeesComponent implements OnInit {
 
-  employees: Employee[];
-  constructor(public empService: EmployeeService) { }
+  employees=[];
+  totalEmployees: number = 0
+  totalSalaries: number = 0
+
+
+  constructor(public empService: EmployeeService) {
+
+    empService.empList.snapshotChanges()
+      .subscribe(actions => {
+        actions.forEach(action => {
+          let y = action.payload.toJSON()
+          y["$key"] = action.key
+          this.employees.push(y as Employee)
+        }); this.getTotals();console.log(this.totalSalaries,this.totalEmployees)
+      })
+
+  }
 
   ngOnInit() {
-    this.employees = this.empService.getEmployees();
+    
   }
+
+  getTotals() {
+    for (let index = 0; index < this.employees.length; index++) {
+      this.totalEmployees += 1;
+      this.totalSalaries += parseFloat(this.employees[index].salary.toString());
+    }
+ }
+
+
 
 }
