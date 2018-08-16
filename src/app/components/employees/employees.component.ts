@@ -10,7 +10,7 @@ import { Employee } from "../../interfaces/Employee";
 })
 export class EmployeesComponent implements OnInit {
 
-  employees=[];
+  employees:Employee[]=[];
   totalEmployees: number = 0
   totalSalaries: number = 0
 

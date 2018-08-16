@@ -21,6 +21,10 @@ export class EmployeeService {
   getEmployees() {
     return this.empList;
   }
+
+  addEmployee(emp:Employee){
+    this.empList.push(emp);
+  }
  
  
 }

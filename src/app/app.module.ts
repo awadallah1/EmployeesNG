@@ -4,6 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule,Routes } from "@angular/router";
 import { HttpModule } from '@angular/http';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
+
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireStorageModule } from 'angularfire2/storage';
@@ -32,6 +35,8 @@ const appRoutes:Routes= [
   { path: 'settings', component: SettingsComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: '', component: DashboardComponent },
+  { path: 'add-employee', component: AddEmployeeComponent },
+
   // { path: '',   redirectTo: '', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }
 ];
@@ -54,6 +59,12 @@ const appRoutes:Routes= [
     BrowserModule,
     FormsModule,
     HttpModule,
+    BrowserAnimationsModule, // required animations module
+    ToastrModule.forRoot(
+      {timeOut: 1000,
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
+      easeTime:600}), // ToastrModule added
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: true } // <-- debugging purposes only
