@@ -1,111 +1,123 @@
 <div class="container">
-    <div class="row">
-        <div class="col-sm-4">
+    <div style="margin-top: 20px;" class="row">
+        <div style="margin-top: 10px;" class="col-sm-4">
             <a class="btn btn-warning" routerLink="/dashboard"><h4><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>
                     Back to Dashboard </h4></a>
         </div>
         <div class="col-sm-8">
-            <div style="margin-top: 40px;" class="container">
-                <form novalidate (ngSubmit)="onsubmit(postForm)" #postForm="ngForm">
+            <div style="margin-top: 10px" class="jumbotron bg-warning ">
+                <h4 style="margin-top:-20px;" class="display-5 text-center"><i style="color: darkred" class="fa fa-user-circle" aria-hidden="true"></i> Add New Employee</h4>
+                <div style="margin-top: 10px;" class="container">
+                    <form novalidate (ngSubmit)="onsubmit(postForm)" #postForm="ngForm">
 
-                    <div class="form-group">
-                        <label for="firstName">First Name</label>
-                        <input name='firstName' required [(ngModel)]="employee.firstName" type="text" class="form-control" id="firstName" required
-                            minlength='3' #firstName="ngModel">
-                        <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="alert alert-danger">
-                            <div *ngIf="firstName?.errors.required">
-                                First Name is required.
-                            </div>
-                            <div *ngIf="firstName?.errors.minlength">
-                                First Name should more than Three letters.
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input name='firstName' required [(ngModel)]="employee.firstName" type="text" class="form-control" id="firstName" required
+                                minlength='3' #firstName="ngModel">
+                            <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="alert alert-danger">
+                                <div *ngIf="firstName?.errors.required">
+                                    First Name is required.
+                                </div>
+                                <div *ngIf="firstName?.errors.minlength">
+                                    First Name should more than Three letters.
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="lastName">Last Name</label>
-                        <input name='lastName' required [(ngModel)]="employee.lastName" type="text" class="form-control" id="lastName" required minlength='3'
-                            #lastName="ngModel">
-                        <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="alert alert-danger">
-                            <div *ngIf="lastName?.errors.required">
-                                Second Name is required.
-                            </div>
-                            <div *ngIf="lastName?.errors.minlength">
-                                Second Name should more than Three letters.
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input name='lastName' required [(ngModel)]="employee.lastName" type="text" class="form-control" id="lastName" required minlength='3'
+                                #lastName="ngModel">
+                            <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="alert alert-danger">
+                                <div *ngIf="lastName?.errors.required">
+                                    Second Name is required.
+                                </div>
+                                <div *ngIf="lastName?.errors.minlength">
+                                    Second Name should more than Three letters.
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input name='email' required [(ngModel)]="employee.email" type="email" class="form-control" id="email" required email=true
-                            #email="ngModel">
-                        <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
-                            <div *ngIf="email?.errors.required">
-                                Email is required.
-                            </div>
-                            <div *ngIf="email?.errors.email">
-                                Not An Email
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input name='email' required [(ngModel)]="employee.email" type="email" class="form-control" id="email" required email=true
+                                #email="ngModel">
+                            <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
+                                <div *ngIf="email?.errors.required">
+                                    Email is required.
+                                </div>
+                                <div *ngIf="email?.errors.email">
+                                    Not An Email
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="country">Country</label>
-                        <input name='country' required [(ngModel)]="employee.country" type="text" class="form-control" id="country" required #country="ngModel">
-                        <div *ngIf="country.invalid && (country.dirty || country.touched)" class="alert alert-danger">
-                            <div *ngIf="country?.errors.required">
-                                Country is required.
+                        <div class="form-group">
+                            <label for="country">Country</label>
+                            <input name='country' required [(ngModel)]="employee.country" type="text" class="form-control" id="country" required #country="ngModel">
+                            <div *ngIf="country.invalid && (country.dirty || country.touched)" class="alert alert-danger">
+                                <div *ngIf="country?.errors.required">
+                                    Country is required.
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="city">City</label>
-                        <input name='city' required [(ngModel)]="employee.city" type="text" class="form-control" id="city" required #city="ngModel">
-                        <div *ngIf="city.invalid && (city.dirty || city.touched)" class="alert alert-danger">
-                            <div *ngIf="city?.errors.required">
-                                City is required.
+                        <div class="form-group">
+                            <label for="city">City</label>
+                            <input name='city' required [(ngModel)]="employee.city" type="text" class="form-control" id="city" required #city="ngModel">
+                            <div *ngIf="city.invalid && (city.dirty || city.touched)" class="alert alert-danger">
+                                <div *ngIf="city?.errors.required">
+                                    City is required.
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Phone</label>
-                        <input name='phone' [(ngModel)]='employee.phone' type="tel" pattern="\d*" class="form-control" id="phone" required minlength='12'
-                            #phone="ngModel">
-                        <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="alert alert-danger">
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input name='phone' [(ngModel)]='employee.phone' type="tel" pattern="\d*" class="form-control" id="phone" required minlength='12'
+                                #phone="ngModel">
+                            <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="alert alert-danger">
 
-                            <div *ngIf="phone?.errors.required">
-                                Phone Number is required.
-                            </div>
-                            <div *ngIf="phone?.errors.minlength">
-                                Phone Number Not More Than 12 Digits
-                            </div>
-                            <div *ngIf="phone?.errors.pattern">
-                                Phone Should Be Digits
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="salary">Salary</label>
-                        <input oninput="validity.valid||(value='');" name='salary' [(ngModel)]='employee.salary' type="number" class="form-control"
-                            id="salary" required #salary="ngModel">
-                        <div *ngIf="salary.invalid && (salary.dirty || salary.touched)" class="alert alert-danger">
-                            <div *ngIf="salary?.errors.required">
-                                Salary is required.
+                                <div *ngIf="phone?.errors.required">
+                                    Phone Number is required.
+                                </div>
+                                <div *ngIf="phone?.errors.minlength">
+                                    Phone Number Not More Than 12 Digits
+                                </div>
+                                <div *ngIf="phone?.errors.pattern">
+                                    Phone Should Be Digits
+                                </div>
 
                             </div>
                         </div>
-                    </div>
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-success" [disabled]="!postForm.form.valid">Submit</button>
-                        <button style="margin-left:30px;" type="reset" class="btn btn-success" (click)="!postForm.form.reset()">Reset</button>
-                        
-                        
-                    </div>
-                </form>
 
+                        <div class="form-group">
+                            <label for="salary">Salary</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-dollar"></i></span>
+                                </div>
+                                
+                                <input  name='salary' [(ngModel)]='employee.salary' type="number" class="form-control"
+                                id="salary" required #salary="ngModel" placeholder="Enter Employee Salary">
+                                
+                              </div>
+                            
+                            <div *ngIf="salary.invalid && (salary.dirty || salary.touched)" class="alert alert-danger">
+                                <div *ngIf="salary?.errors.required">
+                                    Salary is required.
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-success" [disabled]="!postForm.form.valid">Submit</button>
+                            <button style="margin-left:30px;" type="reset" class="btn btn-success" (click)="!postForm.form.reset()">Reset</button>
+
+
+                        </div>
+                    </form>
+
+                </div>
             </div>
+
 
         </div>
 

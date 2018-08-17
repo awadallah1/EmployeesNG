@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
+import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
 // import {AngularFireDatabase, FirebaseListObservable,FirebaseObjectObservable } from "angularfire2/database-deprecated";
 // import { Observable } from 'rxjs';
 import { Employee } from "../interfaces/Employee";
@@ -20,6 +20,11 @@ export class EmployeeService {
   ///// Get Employees 
   getEmployees() {
     return this.empList;
+  }
+  getEmployee(id) {
+    
+    return this.db.object('employees/'+id).snapshotChanges();
+
   }
 
   addEmployee(emp:Employee){

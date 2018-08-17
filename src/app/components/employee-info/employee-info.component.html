@@ -1,3 +1,72 @@
-<p>
-  employee-info works!
-</p>
+<div class="container">
+
+  <ng-container *ngIf="employee.$key; else elseTemplate">
+    <div class="card text-white bg-dark mb-3">
+
+      <div class="lead card-header">
+        <h3>{{employee.firstName}}{{' '}}{{employee.lastName}}</h3>
+      </div>
+      <div class="row">
+        <div class="col-md-9">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-5">
+                <div class="float-left">
+                  <div class="card-title">
+                    <h5>First Name : {{employee.firstName}} </h5>
+                  </div>
+                </div>
+                <div class="float-left">
+                  <div class="card-title">
+                    <h5>Last Name : {{employee.lastName}} </h5>
+                  </div>
+                </div>
+                <div class="float-left">
+                  <div class="card-title">
+                    <h5>Country : {{employee.country}} </h5>
+                  </div>
+                </div>
+               
+              </div>
+              <div class="col-md-7">
+                  <div class="float-left">
+                      <div class="card-title">
+                        <h5>Phone : {{employee.phone}} </h5>
+                      </div>
+                    </div>
+                    <div class="float-left">
+                        <div class="card-title">
+                          <h5>Salary : {{employee.salary}} </h5>
+                        </div>
+                      </div>
+                      <div class="float-left">
+                          <div class="card-title">
+                            <h5>Email : {{employee.email}} </h5>
+                          </div>
+                        </div>
+                        <div class="float-left">
+                            <div class="card-title">
+                              <h5>City : {{employee.city}} </h5>
+                            </div>
+                          </div>
+              </div>
+              
+               
+            </div>
+           </div>
+
+        </div>
+
+        <div class="col-md-3  text-white ">
+          <app-sidebar></app-sidebar>
+        </div>
+      </div>
+
+    </div>
+  </ng-container>
+  <ng-template #elseTemplate>
+    <h1>Loading..........................</h1>
+  </ng-template>
+
+
+</div>

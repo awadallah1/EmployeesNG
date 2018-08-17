@@ -40,5 +40,8 @@ td {
   left: 0;
   z-index: 1030;
 }
+label{
+  font-size: 18px;
+}
 
 

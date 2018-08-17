@@ -33,6 +33,7 @@ const appRoutes:Routes= [
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'settings', component: SettingsComponent },
+  { path: 'employee/:id', component: EmployeeInfoComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: '', component: DashboardComponent },
   { path: 'add-employee', component: AddEmployeeComponent },
