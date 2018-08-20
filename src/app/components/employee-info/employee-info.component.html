@@ -2,7 +2,6 @@
 
   <ng-container *ngIf="employee.$key; else elseTemplate">
     <div class="card text-white bg-dark mb-3">
-
       <div class="lead card-header">
         <h3>{{employee.firstName}}{{' '}}{{employee.lastName}}</h3>
       </div>
@@ -26,34 +25,37 @@
                     <h5>Country : {{employee.country}} </h5>
                   </div>
                 </div>
-               
+
               </div>
               <div class="col-md-7">
-                  <div class="float-left">
-                      <div class="card-title">
-                        <h5>Phone : {{employee.phone}} </h5>
-                      </div>
-                    </div>
-                    <div class="float-left">
-                        <div class="card-title">
-                          <h5>Salary : {{employee.salary}} </h5>
-                        </div>
-                      </div>
-                      <div class="float-left">
-                          <div class="card-title">
-                            <h5>Email : {{employee.email}} </h5>
-                          </div>
-                        </div>
-                        <div class="float-left">
-                            <div class="card-title">
-                              <h5>City : {{employee.city}} </h5>
-                            </div>
-                          </div>
+                <div class="float-left">
+                  <div class="card-title">
+                    <h5>Phone : {{employee.phone}} </h5>
+                  </div>
+                </div>
+                <div class="float-left">
+                  <div class="card-title">
+                    <h5>Salary : 
+                      <span [class.text-warning]="employee.salary>1000 && employee.salary<5000" [class.text-success]="employee.salary>5000"
+                        [class.text-danger]="employee.salary<1000">{{employee.salary}}
+                      </span> </h5>
+                  </div>
+                </div>
+                <div class="float-left">
+                  <div class="card-title">
+                    <h5>Email : {{employee.email}} </h5>
+                  </div>
+                </div>
+                <div class="float-left">
+                  <div class="card-title">
+                    <h5>City : {{employee.city}} </h5>
+                  </div>
+                </div>
               </div>
-              
-               
+
+
             </div>
-           </div>
+          </div>
 
         </div>
 
@@ -67,6 +69,6 @@
   <ng-template #elseTemplate>
     <h1>Loading..........................</h1>
   </ng-template>
-
+  
 
 </div>

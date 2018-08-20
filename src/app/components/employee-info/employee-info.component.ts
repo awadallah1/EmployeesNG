@@ -30,12 +30,11 @@ export class EmployeeInfoComponent implements OnInit {
         this.employee.city=employee.city;
         this.employee.phone=employee.phone;
         this.employee.salary=employee.salary;
-
-    
+  
       
          })
          
-console.log(this.employee)
+
   }
 
 

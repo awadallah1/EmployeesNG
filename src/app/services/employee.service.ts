@@ -30,6 +30,22 @@ export class EmployeeService {
   addEmployee(emp:Employee){
     this.empList.push(emp);
   }
+  updateEmployee(employee : Employee){
+    this.empList.update(employee.$key,
+      {
+        firstName: employee.firstName,
+        lastName: employee.lastName,
+        email: employee.email,
+        country: employee.country,
+        city: employee.city,
+        phone: employee.phone,
+        salary: employee.salary
+      });
+  }
+
+  deleteEmployee(id){
+    this.empList.remove(id);
+  }
  
  
 }

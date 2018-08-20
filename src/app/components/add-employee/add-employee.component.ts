@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Employee } from "../../interfaces/Employee";
 import { ToastrService } from 'ngx-toastr';
 import { EmployeeService } from '../../services/employee.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+
 
 
 
@@ -13,34 +14,67 @@ import { Router } from '@angular/router';
 })
 export class AddEmployeeComponent implements OnInit {
 
-  employee: Employee;
+  employee: Employee = {};
+  btnTitle:string='Submit'
+  forEdit:boolean=false;
 
-  constructor(private empService: EmployeeService,private _Router:Router, private toastr: ToastrService) { }
+  id: string = this._route.snapshot.queryParams["id"];
 
-  ngOnInit() {
-    this.employee = {
-      firstName: '',
-      lastName: '',
-      email: '',
-      country: '',
-      city: '',
-      phone: null,
-      salary: null
+  constructor(private _route: ActivatedRoute, private empService: EmployeeService, private _Router: Router, private toastr: ToastrService) { }
+
+  public ngOnInit() {
+    if (this.id) {
+      this.btnTitle='Edit'
+      this.forEdit=true;
+      this.empService.getEmployee(this.id).subscribe(action => {
+
+        let employee = action.payload.val() as Employee;
+
+        this.employee.$key = action.key;
+
+        this.employee.firstName = employee.firstName;
+        this.employee.lastName = employee.lastName;
+        this.employee.email = employee.email;
+        this.employee.country = employee.country;
+        this.employee.city = employee.city;
+        this.employee.phone = employee.phone;
+        this.employee.salary = employee.salary;
+
+
+
+      })
+    } else {
+      this.employee = {
+        firstName: '',
+        lastName: '',
+        email: '',
+        country: '',
+        city: '',
+        phone: null,
+        salary: null
+      }
 
     }
   }
 
 
-  onsubmit({value,valid}:{value:Employee,valid:boolean}) {
+  onsubmit({ value, valid }: { value: Employee, valid: boolean }) {
     if (valid) {
       this.empService.addEmployee(value);
-      this.toastr.success('Employee Added Successfully!','Employees',{timeOut: 3000});
-      this.employee={} as Employee;
+      this.toastr.success('Employee Added Successfully!', 'Employees', { timeOut: 3000 });
+      this.employee = {} as Employee;
       this._Router.navigate(['/'])
-      
-    }
-   
-  }
 
-  
+    }
+      }
+
+      onEdit(){
+        this.empService.updateEmployee(this.employee);
+        this.toastr.success('Employee Updated Successfully!!','Employees', { timeOut: 3000 })
+        
+        this.employee = {} as Employee;
+        this._Router.navigate(['/'])
+      }
+
+
 }

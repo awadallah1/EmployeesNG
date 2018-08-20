@@ -1,12 +1,11 @@
 <div class="container">
     <div style="margin-top: 20px;" class="row">
-        <div style="margin-top: 10px;" class="col-sm-4">
-            <a class="btn btn-warning" routerLink="/dashboard"><h4><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>
+               <div class="col">
+                <a class="btn btn-warning" routerLink="/dashboard"><h4><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>
                     Back to Dashboard </h4></a>
-        </div>
-        <div class="col-sm-8">
             <div style="margin-top: 10px" class="jumbotron bg-warning ">
-                <h4 style="margin-top:-20px;" class="display-5 text-center"><i style="color: darkred" class="fa fa-user-circle" aria-hidden="true"></i> Add New Employee</h4>
+                <h4 style="margin-top:-20px;" class="display-5 font-weight-bold text-center"><i style="color: darkred" class="fa fa-user-circle"
+                        aria-hidden="true"></i> Add New Employee</h4>
                 <div style="margin-top: 10px;" class="container">
                     <form novalidate (ngSubmit)="onsubmit(postForm)" #postForm="ngForm">
 
@@ -92,14 +91,14 @@
                             <label for="salary">Salary</label>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fa fa-dollar"></i></span>
+                                    <span class="input-group-text"><i class="fa fa-dollar"></i></span>
                                 </div>
-                                
-                                <input  name='salary' [(ngModel)]='employee.salary' type="number" class="form-control"
-                                id="salary" required #salary="ngModel" placeholder="Enter Employee Salary">
-                                
-                              </div>
-                            
+
+                                <input name='salary' [(ngModel)]='employee.salary' type="number" class="form-control" id="salary" required #salary="ngModel"
+                                    placeholder="Enter Employee Salary">
+
+                            </div>
+
                             <div *ngIf="salary.invalid && (salary.dirty || salary.touched)" class="alert alert-danger">
                                 <div *ngIf="salary?.errors.required">
                                     Salary is required.
@@ -108,10 +107,10 @@
                             </div>
                         </div>
                         <div class="text-center">
-                            <button type="submit" class="btn btn-success" [disabled]="!postForm.form.valid">Submit</button>
-                            <button style="margin-left:30px;" type="reset" class="btn btn-success" (click)="!postForm.form.reset()">Reset</button>
-
-
+                            <button *ngIf="!forEdit" type="submit" class="btn btn-success" [disabled]="!postForm.form.valid">{{btnTitle}}</button>
+                            <button *ngIf="forEdit" (click)="onEdit()" class="btn btn-success" [disabled]="!postForm.form.valid">{{btnTitle}}</button>
+                            
+                            <button style="margin-left:30px;" type="reset" class="btn btn-success">Reset</button>
                         </div>
                     </form>
 

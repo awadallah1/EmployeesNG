@@ -7,6 +7,8 @@ import { HttpModule } from '@angular/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 
+import {SnotifyModule, SnotifyService, ToastDefaults} from 'ng-snotify';
+
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireStorageModule } from 'angularfire2/storage';
@@ -60,6 +62,7 @@ const appRoutes:Routes= [
     BrowserModule,
     FormsModule,
     HttpModule,
+    SnotifyModule,
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot(
       {timeOut: 1000,
@@ -77,7 +80,9 @@ const appRoutes:Routes= [
    
 
   ],
-  providers: [EmployeeService,AngularFireDatabase,AngularFireAuth],
+  providers: [EmployeeService,AngularFireDatabase,AngularFireAuth,
+    {provide: 'SnotifyToastConfig', useValue: ToastDefaults},
+    SnotifyService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

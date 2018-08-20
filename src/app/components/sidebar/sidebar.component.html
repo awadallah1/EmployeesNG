@@ -1,8 +1,6 @@
 <div class="text-center">
-
-
   <a class="btn btn-warning" routerLink="/"><h5> <i class="fa fa-arrow-circle-left"></i>Back To Dashboard</h5></a>
   <a class="btn btn-warning" routerLink="/add-employee"><h5><i class="fa fa-user-circle"></i>New Employee </h5></a>
-  <a class="btn btn-warning" routerLink="/add-employee"><h5><i class="fa fa-edit"></i> Edit Employee </h5></a>
-  <a class="btn btn-warning" routerLink="/"><h5><i class="fa fa-trash-o"></i> Delete Employee </h5></a>
+  <a class="btn btn-warning" routerLink="/add-employee" (click)="editClick();"><h5><i class="fa fa-edit"></i> Edit Employee </h5></a>
+  <a style="color:#212529" class="btn btn-warning" (click)="deleteClick();"><h5><i class="fa fa-trash-o"></i> Delete Employee </h5></a>
 </div>
