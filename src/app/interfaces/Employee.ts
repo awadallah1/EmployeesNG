@@ -7,4 +7,5 @@ export interface Employee {
     country?:string;
     phone?:number;
     salary?:number;
+    image?:string;
 }
