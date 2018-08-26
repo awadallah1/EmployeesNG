@@ -5,6 +5,7 @@ import { EmployeeService } from '../../services/employee.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from 'angularfire2/storage';
 import { finalize } from 'rxjs/operators';
+import { SnotifyService, SnotifyPosition, SnotifyToastConfig, SnotifyToast } from 'ng-snotify';
 
 import { Observable } from 'rxjs';
 
@@ -32,7 +33,10 @@ export class AddEmployeeComponent implements OnInit {
   id: string = this._route.snapshot.queryParams["id"];
   oldImage: string;
 
-  constructor(private afStorage: AngularFireStorage, private _route: ActivatedRoute, private empService: EmployeeService, private _Router: Router, private toastr: ToastrService) { }
+
+
+
+  constructor(private snotifyService: SnotifyService, private afStorage: AngularFireStorage, private _route: ActivatedRoute, private empService: EmployeeService, private _Router: Router, private toastr: ToastrService) { }
 
   public ngOnInit() {
 
@@ -79,29 +83,59 @@ export class AddEmployeeComponent implements OnInit {
     }
   }
 
+  onAsyncLoading(time:number) {
+
+    const successAction = Observable.create(observer => {
+      const successAction = Observable.create(observer => {
+
+        observer.next({
+
+        })
+
+      });
+
+    })
+
+    this.snotifyService.async('','Saving Data', successAction, { timeout: time, position: SnotifyPosition.centerCenter, showProgressBar: true });
+
+  }
 
   onsubmit({ value, valid }: { value: Employee, valid: boolean }) {
     if (valid && !this.id) {
+      if(this.myEvent){
+        this.onAsyncLoading(2400);
+        const id = Math.random().toString(36).substring(2);
+        this.ref = this.afStorage.ref(id);
+        this.task = this.ref.put(this.myEvent.target.files[0]);
+        this.task.snapshotChanges().pipe(
+          finalize(() => {
+            this.downloadURL = this.ref.getDownloadURL()
+            this.downloadURL.subscribe(url => {
+              
+              value.image = url;
+              this.empService.addEmployee(value);
+              this.employee = {} as Employee;
+              this.toastr.success('Employee Added Successfully!', 'Employees', { timeOut: 3000 });
+              this._Router.navigate(['/']);
+  
+            });
+          })
+        )
+          .subscribe();
+      }else{
+        this.onAsyncLoading(1200);
+        setTimeout(() => {
+          this.empService.addEmployee(value);
+          this.employee = {} as Employee;
+          this.toastr.success('Employee Added Successfully!', 'Employees', { timeOut: 3000 });
+          this._Router.navigate(['/']);
+        }, 2000);
+       
 
-      const id = Math.random().toString(36).substring(2);
-      this.ref = this.afStorage.ref(id);
-      this.task = this.ref.put(this.myEvent.target.files[0]);
-      this.task.snapshotChanges().pipe(
-        finalize(() => {
-          this.downloadURL = this.ref.getDownloadURL()
-          this.downloadURL.subscribe(url => {
-            value.image = url;
-            this.empService.addEmployee(value);
-            this.employee = {} as Employee;
-            this.toastr.success('Employee Added Successfully!', 'Employees', { timeOut: 3000 });
-            this._Router.navigate(['/']);
-
-          });
-        })
-      )
-        .subscribe();
-
+      }
       
+
+
 
 
 
@@ -153,10 +187,17 @@ export class AddEmployeeComponent implements OnInit {
           this.url = '';
         }
         else {
-          this.url = reader.result as string;
-          this.myEvent = event;
-
+          if(event.target.files[0].size>100000){
+            this.toastr.error('image should be not more than 100kb', 'Employees', { timeOut: 5000 });
+            this.url = '';
+          }else{
+            this.url = reader.result as string;
+            this.myEvent = event;
+          }
+          
+         
         }
+       
 
       }
     }
