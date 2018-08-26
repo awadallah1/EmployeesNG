@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from 'angularfire2/storage';
 import { Employee } from "../interfaces/Employee";
 
-import * as firebase from 'firebase';
+import * as firebase from 'firebase/app'
 
 
 @Injectable({
@@ -38,7 +38,7 @@ export class EmployeeService {
   }
 
   addEmployee(emp: Employee) {
-    
+
     this.empList.push(emp);
   }
   updateEmployee(employee: Employee) {
@@ -51,7 +51,28 @@ export class EmployeeService {
         city: employee.city,
         phone: employee.phone,
         salary: employee.salary,
-        image:employee.image
+        image: employee.image
+      })
+  }
+
+  ///update with delete Image
+
+  updateEmployeeWithDelete(employee: Employee, name: string) {
+    this.empList.set(employee.$key,
+      {
+        firstName: employee.firstName,
+        lastName: employee.lastName,
+        email: employee.email,
+        country: employee.country,
+        city: employee.city,
+        phone: employee.phone,
+        salary: employee.salary,
+        image: employee.image
+      }).then(() => {
+        if (name) {
+          this.deleteImage(name);
+        }
+
       });
   }
 
@@ -60,11 +81,11 @@ export class EmployeeService {
   }
 
 
-  
-  deleteImage(name: string) {
+
+  public deleteImage(name: string) {
     const storageRef = firebase.storage().ref();
     storageRef.storage.refFromURL(name).delete();
-    console.log('deleteeeeeeeeeeeeeeeeeeeeeeeeeeeed')
+
   }
 
 

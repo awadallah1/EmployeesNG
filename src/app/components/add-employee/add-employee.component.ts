@@ -8,6 +8,7 @@ import { finalize } from 'rxjs/operators';
 import { SnotifyService, SnotifyPosition, SnotifyToastConfig, SnotifyToast } from 'ng-snotify';
 
 import { Observable } from 'rxjs';
+import * as firebase from 'firebase/app'
 
 
 @Component({
@@ -28,10 +29,11 @@ export class AddEmployeeComponent implements OnInit {
   picFile: File;
   myEvent: any;
 
+
   url: string
 
   id: string = this._route.snapshot.queryParams["id"];
-  oldImage: string;
+  oldImage: string = null;
 
 
 
@@ -44,31 +46,38 @@ export class AddEmployeeComponent implements OnInit {
       this.btnTitle = 'Edit'
       this.forEdit = true;
       this.empService.getEmployee(this.id).subscribe(action => {
-
         let employee = action.payload.val() as Employee;
-        if (employee.image) { this.oldImage = employee.image; }
+        if (employee.image != '') {
+          this.oldImage = employee.image;
+          this.employee.$key = action.key;
 
-        this.employee.$key = action.key;
+          this.employee.firstName = employee.firstName;
+          this.employee.lastName = employee.lastName;
+          this.employee.email = employee.email;
+          this.employee.country = employee.country;
+          this.employee.city = employee.city;
+          this.employee.phone = employee.phone;
+          this.employee.salary = employee.salary;
+          this.employee.image = employee.image;
 
-        this.employee.firstName = employee.firstName;
-        this.employee.lastName = employee.lastName;
-        this.employee.email = employee.email;
-        this.employee.country = employee.country;
-        this.employee.city = employee.city;
-        this.employee.phone = employee.phone;
-        this.employee.salary = employee.salary;
-        if (this.empService.imageURL != '') {
-          this.employee.image = this.empService.imageURL;
+
         } else {
-          this.employee.image = this.oldImage;
+          this.oldImage = '';
+          this.employee.$key = action.key;
+
+          this.employee.firstName = employee.firstName;
+          this.employee.lastName = employee.lastName;
+          this.employee.email = employee.email;
+          this.employee.country = employee.country;
+          this.employee.city = employee.city;
+          this.employee.phone = employee.phone;
+          this.employee.salary = employee.salary;
+          this.employee.image = employee.image;
+
         }
-
-
-
-
-
       })
     } else {
+
       this.employee = {
         firstName: '',
         lastName: '',
@@ -83,26 +92,16 @@ export class AddEmployeeComponent implements OnInit {
     }
   }
 
-  onAsyncLoading(time:number) {
-
+  onAsyncLoading(time: number) {
     const successAction = Observable.create(observer => {
-      const successAction = Observable.create(observer => {
-
-        observer.next({
-
-        })
-
-      });
-
-    })
-
-    this.snotifyService.async('','Saving Data', successAction, { timeout: time, position: SnotifyPosition.centerCenter, showProgressBar: true });
+    });
+    this.snotifyService.async('', 'Saving Data', successAction, { timeout: time, position: SnotifyPosition.centerCenter, showProgressBar: true });
 
   }
 
   onsubmit({ value, valid }: { value: Employee, valid: boolean }) {
-    if (valid && !this.id) {
-      if(this.myEvent){
+    if (valid && !this.forEdit) {
+      if (this.myEvent) {
         this.onAsyncLoading(2400);
         const id = Math.random().toString(36).substring(2);
         this.ref = this.afStorage.ref(id);
@@ -111,59 +110,77 @@ export class AddEmployeeComponent implements OnInit {
           finalize(() => {
             this.downloadURL = this.ref.getDownloadURL()
             this.downloadURL.subscribe(url => {
-              
+
               value.image = url;
               this.empService.addEmployee(value);
               this.employee = {} as Employee;
               this.toastr.success('Employee Added Successfully!', 'Employees', { timeOut: 3000 });
               this._Router.navigate(['/']);
-  
+
             });
           })
         )
           .subscribe();
-      }else{
-        this.onAsyncLoading(1200);
+      } else {
+        this.onAsyncLoading(1000);
         setTimeout(() => {
+          value.image = '';
           this.empService.addEmployee(value);
           this.employee = {} as Employee;
           this.toastr.success('Employee Added Successfully!', 'Employees', { timeOut: 3000 });
+          this.forEdit=false;
           this._Router.navigate(['/']);
         }, 2000);
-       
+
+
+      }
+    }
+
+    if (valid && this.forEdit) {
+
+      if (!this.myEvent) {
+        this.empService.updateEmployee(this.employee);
+        this.onAsyncLoading(1000);
+      } else {
+        this.onAsyncLoading(2000);
+        const id = Math.random().toString(36).substring(2);
+        this.ref = this.afStorage.ref(id);
+        this.task = this.ref.put(this.myEvent.target.files[0]);
+        this.task.snapshotChanges().pipe(
+          finalize(() => {
+            
+            this.downloadURL = this.ref.getDownloadURL()
+            this.downloadURL.subscribe(url => {
+              this.employee.$key = this.id;
+              this.employee.firstName = value.firstName;
+              this.employee.lastName = value.lastName;
+              this.employee.email = value.email;
+              this.employee.country = value.country;
+              this.employee.city = value.city;
+              this.employee.phone = value.phone;
+              this.employee.salary = value.salary;
+              
+              this.employee.image = url;
+              
+              this.empService.updateEmployeeWithDelete(this.employee, this.oldImage)
+              
+            });
+          })
+        ).subscribe();
 
       }
       
-
-
-
-
-
-
-
-
+      setTimeout(() => {
+        this.toastr.success('Employee Updated Successfully!!', 'Employees', { timeOut: 3000 })
+        this.employee = {} as Employee;
+        this.forEdit=false;
+        this._Router.navigate(['/'])
+      }, 3000);
 
     }
   }
 
-  onEdit() {
-    this.employee.image = this.empService.imageURL;
-
-    this.empService.updateEmployee(this.employee);
-
-    setTimeout(() => {
-      this.empService.deleteImage(this.oldImage);
-      console.log('Toooooooot')
-    }, 2000);
-
-
-
-
-    this.toastr.success('Employee Updated Successfully!!', 'Employees', { timeOut: 3000 })
-
-    this.employee = {} as Employee;
-    this._Router.navigate(['/'])
-  }
+  
 
   deleteImage() {
 
@@ -187,22 +204,34 @@ export class AddEmployeeComponent implements OnInit {
           this.url = '';
         }
         else {
-          if(event.target.files[0].size>100000){
+          if (event.target.files[0].size > 100000) {
             this.toastr.error('image should be not more than 100kb', 'Employees', { timeOut: 5000 });
             this.url = '';
-          }else{
+          } else {
             this.url = reader.result as string;
             this.myEvent = event;
           }
-          
-         
         }
-       
+
 
       }
     }
   }
 
+  show() {
+    if(!this.oldImage){
+      console.log('falseeeeee')
+    }
+    if(this.oldImage){
+      console.log('trueeeeeeeee')
+    }
+    
+    
+  }
 
-
+  delete(name: string) {
+    const storageRef = firebase.storage().ref();
+    storageRef.storage.refFromURL(name).delete();
+    console.log('deleteeeeeeeeeeeeeeeeeeeeeeeeeeeed')
+  }
 }
