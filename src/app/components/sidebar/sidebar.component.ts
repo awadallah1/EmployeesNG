@@ -13,6 +13,7 @@ import {SnotifyService, SnotifyPosition} from 'ng-snotify';
 export class SidebarComponent implements OnInit {
   id:string;
   employee:Employee={};
+ 
 
   constructor(private snotify:SnotifyService, private empService:EmployeeService, private router:Router, private _route:ActivatedRoute) {}
 
@@ -31,8 +32,20 @@ export class SidebarComponent implements OnInit {
       exit: 'fadeOut',
       time: 1000
     },position:SnotifyPosition.centerCenter,
-    buttons:[{text: 'ok', action: () => {this.empService.deleteEmployee(this.id);
+    buttons:[{text: 'ok', action: () => {
       
+         this.empService.getEmployee(this.id).subscribe(
+           response=>{
+             let _employee =response.payload.val() as Employee;
+            
+            if(this.employee.image){
+              this.empService.deleteEmployee(this.id,_employee.image);
+            }else{
+              this.empService.deleteEmployee(this.id,null);
+            }
+            }
+         )
+         
       this.snotify.remove();
       this.snotify.success('Employee Deleted Successfully.','Employees',{showProgressBar:false,position:SnotifyPosition.rightTop,timeout:1000});
       this.router.navigate(['/']);

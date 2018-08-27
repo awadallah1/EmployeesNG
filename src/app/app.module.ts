@@ -1,13 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterModule,Routes } from "@angular/router";
+import { RouterModule, Routes } from "@angular/router";
 import { HttpModule } from '@angular/http';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 
-import {SnotifyModule, SnotifyService, ToastDefaults} from 'ng-snotify';
+import { SnotifyModule, SnotifyService, ToastDefaults } from 'ng-snotify';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
@@ -31,8 +31,9 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { EmployeeService } from './services/employee.service';
 import { EmployeesComponent } from './components/employees/employees.component';
-
-const appRoutes:Routes= [
+import { FooterComponent } from './components/footer/footer.component';
+import { Globals } from './globals';
+const appRoutes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'settings', component: SettingsComponent },
@@ -57,7 +58,8 @@ const appRoutes:Routes= [
     RegisterComponent,
     SettingsComponent,
     PageNotFoundComponent,
-    EmployeesComponent
+    EmployeesComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
@@ -66,10 +68,12 @@ const appRoutes:Routes= [
     SnotifyModule,
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot(
-      {timeOut: 1000,
-      positionClass: 'toast-top-right',
-      preventDuplicates: true,
-      easeTime:600}), // ToastrModule added
+      {
+        timeOut: 1000,
+        positionClass: 'toast-top-right',
+        preventDuplicates: true,
+        easeTime: 600
+      }), // ToastrModule added
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: true } // <-- debugging purposes only
@@ -78,11 +82,11 @@ const appRoutes:Routes= [
     AngularFirestoreModule, // imports firebase/firestore, only needed for database features
     // AngularFireAuthModule, // imports firebase/auth, only needed for auth features,
     AngularFireStorageModule,  // imports firebase/storage only needed for storage features
-   
+
 
   ],
-  providers: [EmployeeService,AngularFireDatabase,AngularFireAuth,
-    {provide: 'SnotifyToastConfig', useValue: ToastDefaults},
+  providers: [Globals, EmployeeService, AngularFireDatabase, AngularFireAuth,
+    { provide: 'SnotifyToastConfig', useValue: ToastDefaults },
     SnotifyService],
   bootstrap: [AppComponent]
 })

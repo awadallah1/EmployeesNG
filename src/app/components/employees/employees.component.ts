@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EmployeeService } from '../../services/employee.service';
 import { Employee } from "../../interfaces/Employee";
-
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-employees',
@@ -10,7 +10,7 @@ import { Employee } from "../../interfaces/Employee";
 })
 export class EmployeesComponent implements OnInit {
 
-  employees:Employee[]=[];
+  employees: Employee[] = [];
   totalEmployees: number = 0
   totalSalaries: number = 0
 
@@ -30,6 +30,7 @@ export class EmployeesComponent implements OnInit {
 
   ngOnInit() {
     
+
   }
 
   getTotals() {
@@ -37,7 +38,7 @@ export class EmployeesComponent implements OnInit {
       this.totalEmployees += 1;
       this.totalSalaries += parseFloat(this.employees[index].salary.toString());
     }
- }
+  }
 
 
 

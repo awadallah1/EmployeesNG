@@ -76,8 +76,11 @@ export class EmployeeService {
       });
   }
 
-  deleteEmployee(id) {
+  deleteEmployee(id,name) {
     this.empList.remove(id);
+    if (name) {
+      this.deleteImage(name);
+    }
   }
 
 
@@ -85,6 +88,7 @@ export class EmployeeService {
   public deleteImage(name: string) {
     const storageRef = firebase.storage().ref();
     storageRef.storage.refFromURL(name).delete();
+    
 
   }
 

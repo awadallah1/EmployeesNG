@@ -9,6 +9,7 @@ import { SnotifyService, SnotifyPosition, SnotifyToastConfig, SnotifyToast } fro
 
 import { Observable } from 'rxjs';
 import * as firebase from 'firebase/app'
+import { Globals } from '../../globals';
 
 
 @Component({
@@ -38,7 +39,7 @@ export class AddEmployeeComponent implements OnInit {
 
 
 
-  constructor(private snotifyService: SnotifyService, private afStorage: AngularFireStorage, private _route: ActivatedRoute, private empService: EmployeeService, private _Router: Router, private toastr: ToastrService) { }
+  constructor(private globals:Globals, private snotifyService: SnotifyService, private afStorage: AngularFireStorage, private _route: ActivatedRoute, private empService: EmployeeService, private _Router: Router, private toastr: ToastrService) { }
 
   public ngOnInit() {
 
@@ -95,7 +96,7 @@ export class AddEmployeeComponent implements OnInit {
   onAsyncLoading(time: number) {
     const successAction = Observable.create(observer => {
     });
-    this.snotifyService.async('', 'Saving Data', successAction, { timeout: time, position: SnotifyPosition.centerCenter, showProgressBar: true });
+    this.snotifyService.async('', 'Saving Data', successAction, {position: SnotifyPosition.centerCenter, showProgressBar: true });
 
   }
 
@@ -114,6 +115,7 @@ export class AddEmployeeComponent implements OnInit {
               value.image = url;
               this.empService.addEmployee(value);
               this.employee = {} as Employee;
+              this.snotifyService.remove();
               this.toastr.success('Employee Added Successfully!', 'Employees', { timeOut: 3000 });
               this._Router.navigate(['/']);
 
@@ -127,6 +129,7 @@ export class AddEmployeeComponent implements OnInit {
           value.image = '';
           this.empService.addEmployee(value);
           this.employee = {} as Employee;
+          this.snotifyService.remove();
           this.toastr.success('Employee Added Successfully!', 'Employees', { timeOut: 3000 });
           this.forEdit=false;
           this._Router.navigate(['/']);
@@ -173,6 +176,7 @@ export class AddEmployeeComponent implements OnInit {
       setTimeout(() => {
         this.toastr.success('Employee Updated Successfully!!', 'Employees', { timeOut: 3000 })
         this.employee = {} as Employee;
+        this.snotifyService.remove();
         this.forEdit=false;
         this._Router.navigate(['/'])
       }, 3000);
@@ -232,6 +236,6 @@ export class AddEmployeeComponent implements OnInit {
   delete(name: string) {
     const storageRef = firebase.storage().ref();
     storageRef.storage.refFromURL(name).delete();
-    console.log('deleteeeeeeeeeeeeeeeeeeeeeeeeeeeed')
+    
   }
 }
