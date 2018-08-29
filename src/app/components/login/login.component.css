@@ -1,0 +1,44 @@
+
+
+.d-inline-block{
+    width: 100%;
+    margin-top: 10px;
+}
+.btn-fb{
+    color: #fff;
+    background-color:#3b5998;
+    
+}
+.btn-fb:hover{
+    color: #fff;
+    background-color:#496ebc 
+}
+.btn-tw{
+    color: #fff;
+    background-color:#13a5e4;
+}
+.btn-tw:hover{
+    color: #fff;
+    background-color:#59b5fa;
+}
+@media(max-width:768px){
+    #login-dp{
+        background-color: inherit;
+        color: #fff;
+    }
+    #login-dp .bottom{
+        background-color: inherit;
+        border-top:0 none;
+    }
+}
+
+.btn-go{
+    color: #fff;
+    background-color:#c12a00;
+}
+.btn-go:hover{
+    color: #fff;
+    background-color:#dc4b38;
+}
+
+

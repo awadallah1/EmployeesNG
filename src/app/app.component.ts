@@ -23,9 +23,9 @@ export class AppComponent implements OnInit {
   //very Important and thats best Jquiry on all Project
   ngAfterViewChecked() {
 
-    $("tr").hover(function () {
-      $(this).slideUp();
-    });
+    // $("tr").hover(function () {
+    //   $(this).slideUp();
+    // });
   }
 
 
