@@ -15,6 +15,8 @@ import { AngularFireStorageModule } from 'angularfire2/storage';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 
+import { AuthService } from "./core/auth.service";
+import { AuthGuard } from "./core/auth.guard";
 
 import { environment } from '../environments/environment';
 
@@ -33,13 +35,14 @@ import { EmployeeService } from './services/employee.service';
 import { EmployeesComponent } from './components/employees/employees.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { Globals } from './globals';
+
 const appRoutes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'settings', component: SettingsComponent },
   { path: 'employee/:id', component: EmployeeInfoComponent },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: '', component: DashboardComponent },
+  { path: 'dashboard', component: DashboardComponent , canActivate:[AuthGuard] },
+  { path: '', component: DashboardComponent , canActivate:[AuthGuard]  },
   { path: 'add-employee', component: AddEmployeeComponent },
 
   // { path: '',   redirectTo: '', pathMatch: 'full' },
@@ -87,7 +90,7 @@ const appRoutes: Routes = [
   ],
   providers: [Globals, EmployeeService, AngularFireDatabase, AngularFireAuth,
     { provide: 'SnotifyToastConfig', useValue: ToastDefaults },
-    SnotifyService],
+    SnotifyService,AuthService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
