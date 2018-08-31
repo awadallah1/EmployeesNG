@@ -37,16 +37,16 @@ import { FooterComponent } from './components/footer/footer.component';
 import { Globals } from './globals';
 
 const appRoutes: Routes = [
-  { path: 'register', component: RegisterComponent },
+  { path: 'register', component: RegisterComponent  },
   { path: 'login', component: LoginComponent },
-  { path: 'settings', component: SettingsComponent },
-  { path: 'employee/:id', component: EmployeeInfoComponent },
+  { path: 'settings', component: SettingsComponent, canActivate:[AuthGuard] },
+  { path: 'employee/:id', component: EmployeeInfoComponent , canActivate:[AuthGuard]},
   { path: 'dashboard', component: DashboardComponent , canActivate:[AuthGuard] },
   { path: '', component: DashboardComponent , canActivate:[AuthGuard]  },
-  { path: 'add-employee', component: AddEmployeeComponent },
+  { path: 'add-employee', component: AddEmployeeComponent, canActivate:[AuthGuard] },
 
   // { path: '',   redirectTo: '', pathMatch: 'full' },
-  { path: '**', component: PageNotFoundComponent }
+  { path: '**', component: PageNotFoundComponent, canActivate:[AuthGuard] }
 ];
 @NgModule({
   declarations: [
@@ -72,10 +72,10 @@ const appRoutes: Routes = [
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot(
       {
-        timeOut: 1000,
-        positionClass: 'toast-top-right',
+        timeOut: 3000,
+        positionClass: 'toast-top-center',
         preventDuplicates: true,
-        easeTime: 600
+        easeTime: 400
       }), // ToastrModule added
     RouterModule.forRoot(
       appRoutes,

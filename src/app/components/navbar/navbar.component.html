@@ -8,17 +8,28 @@
 
     <div style="font-size:20px;" class="collapse navbar-collapse" id="navbarColor01">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a class="nav-link"  routerLink="/dashboard" routerLinkActive="active">Dashboard
+        <li *ngIf = "isLogedIn" class="nav-item">
+          <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">Dashboard
           </a>
         </li>
-        <li class="nav-item">
+        <li *ngIf = "!isLogedIn" class="nav-item">
           <a class="nav-link" routerLink="/register" routerLinkActive="active">Register</a>
         </li>
-        <li class="nav-item">
+        <li *ngIf = "!isLogedIn" class="nav-item">
           <a class="nav-link" routerLink="/login" routerLinkActive="active">Login</a>
         </li>
       </ul>
+
+      <ul *ngIf = "isLogedIn" class="navbar-nav ml-auto">
+          <li  class="nav-item">
+              <a class="nav-link"  >{{userEmail}}</a>
+            </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/login" (click)="signOut()" >Logout</a>
+        </li>
+      </ul>
+
+
     </div>
   </nav>
 </div>

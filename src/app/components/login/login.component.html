@@ -3,8 +3,8 @@
     <div style="padding:30px;" class="col-md-12 col-xs-12 col-lg-6  aMargin">
       <h2 class="text-center font-weight-bold">Social Login</h2>
       <div class="text-center btn-group-lg ">
-        <a (click)="signInWithFacebook()"  class="btn btn-fb d-inline-block"><i class="fa fa-facebook"></i> Facebook</a><br>
-        <a (click)="signInWithGoogle()" class="btn btn-go d-inline-block"><i class="fa fa-google-plus"></i> Google</a><br>
+        <a id="facebook" (click)="signInWithFacebook()"  class="btn btn-fb d-inline-block"><i class="fa fa-facebook"></i> Facebook</a><br>
+        <a id="google" (click)="signInWithGoogle()" class="btn btn-go d-inline-block"><i class="fa fa-google-plus"></i> Google</a><br>
         <a  href="#" class="btn btn-tw d-inline-block"><i class="fa fa-twitter"></i> Twitter</a>
       </div>
     </div>
@@ -34,9 +34,9 @@
             New here ? <a href="#"><b>Join Us</b></a>
         </div>
       </div>
-     <button (click)="signout()">click</button>
-     <button (click)="signInAnonymously()">Anonymous</button>
-
+     
+    
+    
      
   </div>
 </div>

@@ -8,8 +8,9 @@ import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firesto
 import { ToastrService } from 'ngx-toastr';
 
 import { Observable, of, BehaviorSubject } from 'rxjs';
-import { switchMap, startWith, tap, filter } from 'rxjs/operators';
+import { switchMap, startWith, tap, filter, map } from 'rxjs/operators';
 import * as firebase from 'firebase/app';
+import { Globals } from "../globals";
 
 
 interface User {
@@ -22,12 +23,13 @@ interface User {
 @Injectable()
 export class AuthService {
   user: Observable<User | null>;
-
+  loggedin: boolean = false;
   constructor(
     private afAuth: AngularFireAuth,
     private afs: AngularFirestore,
-    private router: Router ,
-    private toaster:ToastrService 
+    private router: Router,
+    private toaster: ToastrService,
+    private global: Globals
   ) {
     this.user = this.afAuth.authState.pipe(
       switchMap(user => {
@@ -56,12 +58,30 @@ export class AuthService {
   facebookLogin() {
     // const provider = new auth.FacebookAuthProvider();
     // return this.oAuthLogin(provider);
-    
-    
+
+
+    // var provider = new firebase.auth.FacebookAuthProvider();
+    // firebase.auth().signInWithRedirect(provider)
+    //  this.router.navigate(['dashboard'])
+   
     var provider = new firebase.auth.FacebookAuthProvider();
-    firebase.auth().signInWithRedirect(provider)
-    this.router.navigate(['dashboard'])
+    // this.global.changeMessage('nice');
+    this.afAuth.auth.signInWithRedirect(provider)
+    firebase.auth().getRedirectResult().then(function(result) {
+      var token = result.credential.providerId;
+      var user = result.user;
+      this.router.navigate(['dashboard']);
+      }).catch(function(error) {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      });
+  
+     
   }
+        
+          
+    
+
 
   twitterLogin() {
     const provider = new auth.TwitterAuthProvider();
@@ -72,6 +92,7 @@ export class AuthService {
     return this.afAuth.auth
       .signInWithPopup(provider)
       .then(credential => {
+        this.router.navigate(['dashboard'])
         this.toaster.success('Welcome to EmployeesNG!!!', 'success');
         return this.updateUserData(credential.user);
       })
@@ -122,16 +143,24 @@ export class AuthService {
       .catch(error => this.handleError(error));
   }
 
-  signOut() {
-    this.afAuth.auth.signOut().then(() => {
-      this.router.navigate(['']);
-    });
-  }
- 
+  /// signout and clear localstorrage Items
+
+  // signOut() {
+  //   localStorage.removeItem("displayName");
+  //   localStorage.removeItem("email");
+  //   localStorage.removeItem("picture");
+  //   localStorage.setItem("loggedin", "false");
+  //   this.router.navigate(['login']);
+  //   return this.afAuth.auth.signOut().then(() => {
+  //     localStorage.setItem("loggedin", "false");
+  //     this.router.navigate(['login']);
+  //   });
+  // }
+
 
   // If error, console log and notify user
   private handleError(error: Error) {
-    
+
     console.error(error);
     this.toaster.error(error.message, 'error');
   }
@@ -149,14 +178,29 @@ export class AuthService {
       photoURL: user.photoURL || 'https://goo.gl/Fz9nrQ'
     };
     return userRef.set(data);
-    
+
   }
 
-
-  login(email,password){
-    return new Promise((resolve,reject)=>{
-      this.afAuth.auth.signInWithEmailAndPassword(email,password)
-      .then(userdata=>resolve(userdata),err=>reject(err))
+  login(email, password) {
+    return new Promise((resolve, reject) => {
+      this.afAuth.auth.signInWithEmailAndPassword(email, password)
+        .then(userdata => resolve(userdata), err => reject(err))
     })
+  }
+
+  // method to retreive firebase auth after login redirect
+  redirectLogin() {
+    return this.afAuth.auth.getRedirectResult();
+  }
+
+  ////Essa
+  getAuth() {
+    return this.afAuth.authState.pipe(
+      map(auth => auth)
+    )
+  }
+
+  signOut() {
+    this.afAuth.auth.signOut();
   }
 }
