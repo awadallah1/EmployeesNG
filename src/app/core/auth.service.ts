@@ -61,6 +61,7 @@ export class AuthService {
     // this.global.changeMessage('nice');
     this.afAuth.auth.signInWithRedirect(provider).then(
       next=>{
+        console.log(this.afAuth.auth.currentUser.photoURL)
         this.router.navigate(['dashboard']);
       }
     )

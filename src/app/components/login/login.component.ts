@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { AuthService } from '../../core/auth.service';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Router } from '@angular/router';
@@ -13,7 +13,7 @@ import { Globals } from "../../globals";
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit ,AfterViewInit  {
 
   email: string;
   password: string;
@@ -46,6 +46,16 @@ export class LoginComponent implements OnInit {
         }
       });
    
+    
+  }
+  ngAfterViewInit(): void {
+    // this.getAuthStatus();
+    // if (this.afAuth.authState) {
+      // this.router.navigate(['/']);
+    // }else{
+    //   this.router.navigate(['/login']);
+    // }
+    
     
   }
   /// Anonymous Sign In
@@ -85,7 +95,7 @@ export class LoginComponent implements OnInit {
         (res) => {
           this.afterSignIn();
         }).catch((err) => {
-
+          this.toast.error('Wrong Email or Password', 'LogIn');
           this.router.navigate(['/login'])
         })
 
