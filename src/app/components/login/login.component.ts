@@ -13,10 +13,14 @@ import { Globals } from "../../globals";
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit ,AfterViewInit  {
+export class LoginComponent implements OnInit, AfterViewInit {
 
   email: string;
   password: string;
+  rPassword: string;
+  rcPassword: string;
+  rEmail: string;
+  equal: boolean = false;
   forRegister = false;
 
 
@@ -39,24 +43,24 @@ export class LoginComponent implements OnInit ,AfterViewInit  {
     //   }
 
     // })
-  
-      this.afAuth.auth.getRedirectResult().then(result => {
-        if (result.user) {
-          this.router.navigate(['/']);
-        }
-      });
-   
-    
+
+    this.afAuth.auth.getRedirectResult().then(result => {
+      if (result.user) {
+        this.router.navigate(['/']);
+      }
+    });
+
+
   }
   ngAfterViewInit(): void {
     // this.getAuthStatus();
     // if (this.afAuth.authState) {
-      // this.router.navigate(['/']);
+    // this.router.navigate(['/']);
     // }else{
     //   this.router.navigate(['/login']);
     // }
-    
-    
+
+
   }
   /// Anonymous Sign In
   async signInAnonymously() {
@@ -64,7 +68,7 @@ export class LoginComponent implements OnInit ,AfterViewInit  {
     return await this.router.navigate(['/'])
   }
 
-  
+
   /// Social Login
 
   // async signInWithGithub() {
@@ -79,7 +83,7 @@ export class LoginComponent implements OnInit ,AfterViewInit  {
 
   async signInWithFacebook() {
     await this.auth.facebookLogin()
-    
+
   }
 
   // async signInWithTwitter() {
@@ -129,9 +133,19 @@ export class LoginComponent implements OnInit ,AfterViewInit  {
   //   this.gobal.changeMessage('Login');
   // }
 
-  onRegister(){
-    this.auth.emailSignUp(this.email,this.password);
-      
+  onRegister() {
+    this.auth.emailSignUp(this.rEmail, this.rPassword)
+
+  }
+
+  onChange() {
+    if (this.rcPassword == this.rPassword) {
+      this.equal = true;
+
+    } else {
+      this.equal = false;
+
+    }
   }
 
 }

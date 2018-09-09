@@ -29,7 +29,7 @@ export class NavbarComponent implements OnInit, AfterViewInit {
     /////
     this.auth.getAuth().subscribe(auth => {
       if (auth) {
-      
+     
         this.isLogedIn = true;
         this.userEmail = auth.email;
         if (auth.photoURL) {

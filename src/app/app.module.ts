@@ -28,7 +28,7 @@ import { EditEmployeeComponent } from './components/edit-employee/edit-employee.
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/register/register.component';
+
 import { SettingsComponent } from './components/settings/settings.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { EmployeeService } from './services/employee.service';
@@ -37,16 +37,16 @@ import { FooterComponent } from './components/footer/footer.component';
 import { Globals } from './globals';
 
 const appRoutes: Routes = [
-  { path: 'register', component: RegisterComponent  },
+
   { path: 'login', component: LoginComponent },
-  { path: 'settings', component: SettingsComponent, canActivate:[AuthGuard] },
-  { path: 'employee/:id', component: EmployeeInfoComponent , canActivate:[AuthGuard]},
-  { path: 'dashboard', component: DashboardComponent , canActivate:[AuthGuard] },
-  { path: '', component: DashboardComponent , canActivate:[AuthGuard]  },
-  { path: 'add-employee', component: AddEmployeeComponent, canActivate:[AuthGuard] },
+  { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
+  { path: 'employee/:id', component: EmployeeInfoComponent, canActivate: [AuthGuard] },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+  { path: '', component: DashboardComponent, canActivate: [AuthGuard] },
+  { path: 'add-employee', component: AddEmployeeComponent, canActivate: [AuthGuard] },
 
   // { path: '',   redirectTo: '', pathMatch: 'full' },
-  { path: '**', component: PageNotFoundComponent, canActivate:[AuthGuard] }
+  { path: '**', component: PageNotFoundComponent, canActivate: [AuthGuard] }
 ];
 @NgModule({
   declarations: [
@@ -58,7 +58,7 @@ const appRoutes: Routes = [
     NavbarComponent,
     SidebarComponent,
     LoginComponent,
-    RegisterComponent,
+
     SettingsComponent,
     PageNotFoundComponent,
     EmployeesComponent,
@@ -90,7 +90,7 @@ const appRoutes: Routes = [
   ],
   providers: [Globals, EmployeeService, AngularFireDatabase, AngularFireAuth,
     { provide: 'SnotifyToastConfig', useValue: ToastDefaults },
-    SnotifyService,AuthService, AuthGuard],
+    SnotifyService, AuthService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -48,24 +48,29 @@
       <div [hidden]="!forRegister" style="padding:30px;" class="aMargin col-md-12 col-xs-12 col-lg-6">
         <h2 class="text-center font-weight-bold">JOIN US</h2>
 
-        <form (submit)="onRegister()" class="form" role="form" method="post" accept-charset="UTF-8" id="Register">
+        <form (submit)="onRegister()" class="form"  method="post" #Register="ngForm" accept-charset="UTF-8" id="Register">
           <div style="margin-top:20px;" class="form-group">
             <label class="sr-only" for="exampleInputEmail2">Email address</label>
-            <input name="Remail" [(ngModel)]="email" type="email" class="form-control" id="Remail" placeholder="Email address" required>
+            <input name="Remail" [(ngModel)]="rEmail" type="email" class="form-control" id="Remail" placeholder="Email address" required>
           </div>
           <div class="form-group">
             <label class="sr-only" for="exampleInputPassword2">Password</label>
-            <input name="Rpassword" [(ngModel)]="password" type="password" class="form-control" id="Rpassword" placeholder="Password" required>
+            <input #Rpassword="ngModel" name="p1" [(ngModel)]="rPassword" type="password" class="form-control" id="Rpassword" placeholder="Password" required (keyup)="onChange()">
 
           </div>
           <div class="form-group">
             <label class="sr-only" for="exampleInputPassword2">Confirm Password</label>
-            <input name="Rcpassword"  type="password" class="form-control" id="Rcpassword" placeholder="Confirm Password"
-              required>
+            <input #Rcpassword="ngModel" [(ngModel)]="rcPassword" name="p2"  type="password" class="form-control" id="Rcpassword" placeholder="Confirm Password"
+              required (keyup)="onChange()">
+             
+              <div *ngIf="(Rcpassword.dirty || Rcpassword.touched) &&(Rcpassword.value!= Rpassword.value)" class="alert alert-danger">
+                Not same password
+            </div>
+            
 
           </div>
           <div class="form-group">
-            <button type="submit" class="btn btn-outline-primary btn-block font-weight-bold">Join Us</button>
+            <button type="submit" class="btn btn-outline-primary btn-block font-weight-bold" [disabled]="!Register.form.valid || !equal">Join Us</button>
           </div>
 
         </form>

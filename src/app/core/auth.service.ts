@@ -109,7 +109,7 @@ export class AuthService {
        this.emailLogin(email,password);
        this.router.navigate(['/'])
       })
-      .catch(error => this.handleError(error));
+      .catch(error => this.toaster.error(error, 'Register'));
   }
 
   emailLogin(email: string, password: string) {
