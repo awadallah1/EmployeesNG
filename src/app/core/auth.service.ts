@@ -56,26 +56,15 @@ export class AuthService {
   }
 
   facebookLogin() {
-    // const provider = new auth.FacebookAuthProvider();
-    // return this.oAuthLogin(provider);
-
-
-    // var provider = new firebase.auth.FacebookAuthProvider();
-    // firebase.auth().signInWithRedirect(provider)
-    //  this.router.navigate(['dashboard'])
-   
+       
     var provider = new firebase.auth.FacebookAuthProvider();
     // this.global.changeMessage('nice');
-    this.afAuth.auth.signInWithRedirect(provider)
-    firebase.auth().getRedirectResult().then(function(result) {
-      var token = result.credential.providerId;
-      var user = result.user;
-      this.router.navigate(['dashboard']);
-      }).catch(function(error) {
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      });
-  
+    this.afAuth.auth.signInWithRedirect(provider).then(
+      next=>{
+        this.router.navigate(['dashboard']);
+      }
+    )
+    
      
   }
         
@@ -114,11 +103,10 @@ export class AuthService {
 
   //// Email/Password Auth ////
   emailSignUp(email: string, password: string) {
-    return this.afAuth.auth
-      .createUserWithEmailAndPassword(email, password)
+    return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
       .then(credential => {
-        this.toaster.success('Welcome to EmployeesNG!!!', 'success');
-        return this.updateUserData(credential.user); // if using firestore
+       this.emailLogin(email,password);
+       this.router.navigate(['/'])
       })
       .catch(error => this.handleError(error));
   }
@@ -128,7 +116,7 @@ export class AuthService {
       .signInWithEmailAndPassword(email, password)
       .then(credential => {
         this.toaster.success('Welcome to EmployeesNG!!!', 'success');
-        return this.updateUserData(credential.user);
+       
       })
       .catch(error => this.handleError(error));
   }
@@ -161,8 +149,8 @@ export class AuthService {
   // If error, console log and notify user
   private handleError(error: Error) {
 
-    console.error(error);
-    this.toaster.error(error.message, 'error');
+    // console.error(error);
+    // this.toaster.error(error.message, 'error');
   }
 
   // Sets user data to firestore after succesful login
@@ -200,7 +188,11 @@ export class AuthService {
     )
   }
 
+  set(picture:string){
+    this.afAuth.auth.currentUser.updateProfile({displayName:null, photoURL:picture})
+  }
+
   signOut() {
-    this.afAuth.auth.signOut();
+    return this.afAuth.auth.signOut();
   }
 }

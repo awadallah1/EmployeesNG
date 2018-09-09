@@ -39,7 +39,7 @@ import { Globals } from './globals';
 const appRoutes: Routes = [
   { path: 'register', component: RegisterComponent  },
   { path: 'login', component: LoginComponent },
-  { path: 'settings', component: SettingsComponent, canActivate:[AuthGuard] },
+  { path: 'settings', component: SettingsComponent },
   { path: 'employee/:id', component: EmployeeInfoComponent , canActivate:[AuthGuard]},
   { path: 'dashboard', component: DashboardComponent , canActivate:[AuthGuard] },
   { path: '', component: DashboardComponent , canActivate:[AuthGuard]  },

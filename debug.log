@@ -1,0 +1,10 @@
+[0908/155236.211:ERROR:process_reader_win.cc(242)] ReadMemory at 0x29dfa130000 of 64 bytes failed: Only part of a ReadProcessMemory or WriteProcessMemory request was completed. (0x12B)
+[0908/155237.897:WARNING:pe_image_reader.cc(302)] could not read dos header from C:\WINDOWS\System32\RPCRT4.dll
+[0908/155237.897:ERROR:process_reader_win.cc(242)] ReadMemory at 0x29dfa260000 of 64 bytes failed: Only part of a ReadProcessMemory or WriteProcessMemory request was completed. (0x12B)
+[0908/155237.897:WARNING:pe_image_reader.cc(302)] could not read dos header from C:\WINDOWS\System32\SHELL32.dll
+[0908/155237.898:ERROR:process_reader_win.cc(242)] ReadMemory at 0x29dfb6a0000 of 64 bytes failed: Only part of a ReadProcessMemory or WriteProcessMemory request was completed. (0x12B)
+[0908/155238.541:WARNING:pe_image_reader.cc(302)] could not read dos header from C:\WINDOWS\System32\WS2_32.dll
+[0908/155238.799:ERROR:process_reader_win.cc(242)] ReadMemory at 0xe1681ee000 of 73728 bytes failed: Only part of a ReadProcessMemory or WriteProcessMemory request was completed. (0x12B)
+[0908/155238.799:ERROR:crash_report_exception_handler.cc(111)] WriteEverything failed
+[0908/155238.943:ERROR:filesystem_win.cc(148)] DeleteFile C:\Users\moham\AppData\Local\Google\Chrome\User Data\Crashpad\reports\d4bc9106-5457-4634-af9b-144e5166b488.dmp: The process cannot access the file because it is being used by another process. (0x20)
+[0908/155238.948:ERROR:scoped_process_suspend.cc(40)] NtResumeProcess: An attempt was made to access an exiting process. (0xc000010a)

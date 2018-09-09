@@ -1,20 +1,27 @@
 <div style="width:90%;margin:5%; background-color:#f3f3f3" class="card ">
-  <div  class="row center ">
+  <div class="row center ">
+
+    <!-- /////////////Social Login Form ///////////// -->
+
     <div style="padding:30px;" class="col-md-12 col-xs-12 col-lg-6  aMargin">
       <h2 class="text-center font-weight-bold">Social Login</h2>
       <div class="text-center btn-group-lg ">
-        <a id="facebook" (click)="signInWithFacebook()"  class="btn btn-fb d-inline-block"><i class="fa fa-facebook"></i> Facebook</a><br>
+        <a id="facebook" (click)="signInWithFacebook()" class="btn btn-fb d-inline-block"><i class="fa fa-facebook"></i>
+          Facebook</a><br>
         <a id="google" (click)="signInWithGoogle()" class="btn btn-go d-inline-block"><i class="fa fa-google-plus"></i> Google</a><br>
-        <a  href="#" class="btn btn-tw d-inline-block"><i class="fa fa-twitter"></i> Twitter</a>
+        <a href="#" class="btn btn-tw d-inline-block"><i class="fa fa-twitter"></i> Twitter</a>
       </div>
     </div>
-      <div style="padding:30px;" class="aMargin col-md-12 col-xs-12 col-lg-6">
+
+    <!-- /////////////Email/Password Login Form ///////////// -->
+
+      <div [hidden]="forRegister" style="padding:30px;" class="aMargin col-md-12 col-xs-12 col-lg-6">
         <h2 class="text-center font-weight-bold">Account Login</h2>
 
-        <form (submit)="onSubmit()" class="form" role="form" method="post"  accept-charset="UTF-8" id="login">
+        <form (submit)="onSubmit()" class="form" role="form" method="post" accept-charset="UTF-8" id="login">
           <div style="margin-top:20px;" class="form-group">
             <label class="sr-only" for="exampleInputEmail2">Email address</label>
-            <input name="email" [(ngModel)]= "email" type="email" class="form-control" id="email" placeholder="Email address" required>
+            <input name="email" [(ngModel)]="email" type="email" class="form-control" id="email" placeholder="Email address" required>
           </div>
           <div class="form-group">
             <label class="sr-only" for="exampleInputPassword2">Password</label>
@@ -31,12 +38,44 @@
           </div>
         </form>
         <div>
-            New here ? <a href="#"><b>Join Us</b></a>
+         <a class="btn btn-link" (click)="forRegister=true;" ><b>Join Us </b>If you are new here</a>
         </div>
       </div>
+
+  
+    <!-- /////////////Register Form ///////////// -->
+   
+      <div [hidden]="!forRegister" style="padding:30px;" class="aMargin col-md-12 col-xs-12 col-lg-6">
+        <h2 class="text-center font-weight-bold">JOIN US</h2>
+
+        <form (submit)="onRegister()" class="form" role="form" method="post" accept-charset="UTF-8" id="Register">
+          <div style="margin-top:20px;" class="form-group">
+            <label class="sr-only" for="exampleInputEmail2">Email address</label>
+            <input name="Remail" [(ngModel)]="email" type="email" class="form-control" id="Remail" placeholder="Email address" required>
+          </div>
+          <div class="form-group">
+            <label class="sr-only" for="exampleInputPassword2">Password</label>
+            <input name="Rpassword" [(ngModel)]="password" type="password" class="form-control" id="Rpassword" placeholder="Password" required>
+
+          </div>
+          <div class="form-group">
+            <label class="sr-only" for="exampleInputPassword2">Confirm Password</label>
+            <input name="Rcpassword"  type="password" class="form-control" id="Rcpassword" placeholder="Confirm Password"
+              required>
+
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-outline-primary btn-block font-weight-bold">Join Us</button>
+          </div>
+
+        </form>
+
      
-    
-    
-     
+
+    </div>
+
+
+
+
   </div>
 </div>

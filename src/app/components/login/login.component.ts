@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../core/auth.service';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Router } from '@angular/router';
@@ -13,10 +13,13 @@ import { Globals } from "../../globals";
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit, AfterViewInit {
+export class LoginComponent implements OnInit {
 
   email: string;
   password: string;
+  forRegister = false;
+
+
   socialAuth: boolean = false; // show Google and FB Sign in only when social auth is enabled
   error: any;
   dataLoading: boolean = false;
@@ -34,13 +37,16 @@ export class LoginComponent implements OnInit, AfterViewInit {
     //       this.router.navigate(['/']);
     //     }
     //   }
-    
-    // })
 
-    this.afAuth.auth.getRedirectResult().then(result => {
-      if (result.user) {
-        this.router.navigate(['/']);
-      }});
+    // })
+  
+      this.afAuth.auth.getRedirectResult().then(result => {
+        if (result.user) {
+          this.router.navigate(['/']);
+        }
+      });
+   
+    
   }
   /// Anonymous Sign In
   async signInAnonymously() {
@@ -48,18 +54,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
     return await this.router.navigate(['/'])
   }
 
-  ngAfterViewInit(): void {
-    // this.getAuthStatus();
-    // if (this.afAuth.authState) {
-      // this.router.navigate(['/']);
-    // }else{
-    //   this.router.navigate(['/login']);
-    // }
-    
-    
-  }
-
-
+  
   /// Social Login
 
   // async signInWithGithub() {
@@ -75,13 +70,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
   async signInWithFacebook() {
     await this.auth.facebookLogin()
     
-    // .catch((err) => {
-    //   alert(err.message);
-    //   this.router.navigate(['/login'])
-    // })
-
-
-    // await this.afterSignIn();
   }
 
   // async signInWithTwitter() {
@@ -95,7 +83,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
     this.auth.login(this.email, this.password)
       .then(
         (res) => {
-         this.afterSignIn();
+          this.afterSignIn();
         }).catch((err) => {
 
           this.router.navigate(['/login'])
@@ -130,5 +118,10 @@ export class LoginComponent implements OnInit, AfterViewInit {
   // glob(){
   //   this.gobal.changeMessage('Login');
   // }
+
+  onRegister(){
+    this.auth.emailSignUp(this.email,this.password);
+      
+  }
 
 }

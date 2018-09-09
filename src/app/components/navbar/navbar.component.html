@@ -8,25 +8,31 @@
 
     <div style="font-size:20px;" class="collapse navbar-collapse" id="navbarColor01">
       <ul class="navbar-nav mr-auto">
-        <li *ngIf = "isLogedIn" class="nav-item">
+        <li *ngIf="isLogedIn" class="nav-item">
           <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">Dashboard
           </a>
         </li>
-        <li *ngIf = "!isLogedIn" class="nav-item">
+        <li *ngIf="!isLogedIn" class="nav-item">
           <a class="nav-link" routerLink="/register" routerLinkActive="active">Register</a>
         </li>
-        <li *ngIf = "!isLogedIn" class="nav-item">
+        <li *ngIf="!isLogedIn" class="nav-item">
           <a class="nav-link" routerLink="/login" routerLinkActive="active">Login</a>
+        </li>
+        <li  class="nav-item">
+          <a class="nav-link" routerLink="/settings" routerLinkActive="active">Settings</a>
         </li>
       </ul>
 
-      <ul *ngIf = "isLogedIn" class="navbar-nav ml-auto">
-          <li  class="nav-item">
-              <a class="nav-link"  >{{userEmail}}</a>
-            </li>
+      <ul *ngIf="isLogedIn" class="navbar-nav ml-auto">
+
         <li class="nav-item">
-          <a class="nav-link" routerLink="/login" (click)="signOut()" >Logout</a>
-        </li>
+          <a  [href]="set('https://toppng.com/public/uploads/preview/mohamed-salah-11527532487sj6szlhdjx.png')" class="nav-link "> {{userEmail}} &nbsp;
+            <img class="rounded-circle pull-right small "  src="{{picture}}">
+          </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/login" (click)="signOut()">Logout</a>
+          </li>
       </ul>
 
 

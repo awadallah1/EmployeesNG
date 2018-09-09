@@ -13,7 +13,7 @@ export class NavbarComponent implements OnInit, AfterViewInit {
   constructor(private auth: AuthService,private toast:ToastrService, private router:Router, private global: Globals) { }
   displayName: string;
   email: string;
-  picture: string;
+  picture: string ='https://juankarlos93.files.wordpress.com/2011/05/live-messenger-blue_512x512.png';
   loggedin: string;
 
   /////ESSA/////
@@ -26,6 +26,9 @@ EnableRegister:boolean;
       if(auth){
         this.isLogedIn=true;
         this.userEmail=auth.email;
+        if(auth.photoURL){
+          this.picture=auth.photoURL;
+        }
       }else{
         this.isLogedIn=false;
       }
@@ -50,11 +53,21 @@ EnableRegister:boolean;
   }
 
   signOut() {
-    this.auth.signOut();
-    this.toast.success('You are logged out Sucessfully', 'Logout');
-    this.router.navigate(['/login']);
-    this.ngOnInit();
+    this.auth.signOut().then(
+      ()=>{
+        this.toast.success('You are logged out Sucessfully', 'Logout');
+        this.router.navigate(['/login']);
+      },
+      (error)=>{
+        this.router.navigate(['/login']);
+        console.log('Errrrrrrrrrrrrrrrrrror')}
+    )
+    
+    // this.ngOnInit();
 
+  }
+  set(picture:string){
+    this.auth.set(picture);
   }
 
 }
