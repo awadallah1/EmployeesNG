@@ -1,3 +1,25 @@
-<p>
-  settings works!
-</p>
+<form (submit)="mySubmit()">
+  <div class="container">
+    <div class="row">
+
+      <div class="offset-xs-1 offset-sm-2 offset-md-3 offset-lg-4 col-md-6 col-sm-8 col-xs-10 col-lg-4">
+        <label class="btn btn-warning btn-block">
+          <input name="canRegister" class="form-control" (change)="register()" type="checkbox" [checked]="setting.canRegister">
+          <h4>Open Registeration</h4>
+        </label>
+
+        <label class="btn btn-warning btn-block">
+          <input name="Option3" class="form-control"  type="checkbox" >
+          <h4>Other Option 1</h4>
+        </label>
+
+        <label class="btn embed-responsive-4by3 btn-warning btn-block">
+          <input name="Option2" class="form-control"  type="checkbox" >
+          <h4>Other Option 2</h4>
+        </label>
+        <button  class="btn embed-responsive btn-block btn-info" type="submit"><h4>Save</h4></button>
+
+      </div>
+    </div>
+  </div>
+</form>

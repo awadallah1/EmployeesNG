@@ -35,10 +35,14 @@ import { EmployeeService } from './services/employee.service';
 import { EmployeesComponent } from './components/employees/employees.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { Globals } from './globals';
+import { SettingsService } from './services/settings.service';
+import { canRegisterGuard } from './core/canRegister.guard';
+
+
 
 const appRoutes: Routes = [
 
-  { path: 'login', component: LoginComponent },
+  { path: 'login', component: LoginComponent, canActivate: [canRegisterGuard] },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
   { path: 'employee/:id', component: EmployeeInfoComponent, canActivate: [AuthGuard] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
@@ -88,7 +92,7 @@ const appRoutes: Routes = [
 
 
   ],
-  providers: [Globals, EmployeeService, AngularFireDatabase, AngularFireAuth,
+  providers: [Globals,SettingsService,canRegisterGuard, EmployeeService, AngularFireDatabase, AngularFireAuth,
     { provide: 'SnotifyToastConfig', useValue: ToastDefaults },
     SnotifyService, AuthService, AuthGuard],
   bootstrap: [AppComponent]

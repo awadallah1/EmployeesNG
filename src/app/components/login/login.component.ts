@@ -4,6 +4,10 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Globals } from "../../globals";
+import { Setting } from "../../interfaces/setting";
+import { SettingsService } from "../../services/settings.service";
+
+
 
 
 
@@ -15,6 +19,8 @@ import { Globals } from "../../globals";
 })
 export class LoginComponent implements OnInit, AfterViewInit {
 
+  setting: Setting;
+  canRegister: string = localStorage.getItem('canregister')
   email: string;
   password: string;
   rPassword: string;
@@ -32,7 +38,8 @@ export class LoginComponent implements OnInit, AfterViewInit {
     private afAuth: AngularFireAuth,
     private router: Router,
     private toast: ToastrService,
-    private gobal: Globals) { }
+    private gobal: Globals,
+    private settingService: SettingsService) { }
 
   ngOnInit() {
     // this.afAuth.authState.subscribe(ss=>{
@@ -50,6 +57,15 @@ export class LoginComponent implements OnInit, AfterViewInit {
       }
     });
 
+    if (localStorage.getItem('ngSettings') != null) {
+      this.setting = JSON.parse(localStorage.getItem('ngSettings'));
+      
+    }else{
+      this.setting= this.settingService.getSettings();
+     
+    }
+   
+   
 
   }
   ngAfterViewInit(): void {

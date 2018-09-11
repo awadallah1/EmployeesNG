@@ -37,7 +37,7 @@
             </label>
           </div>
         </form>
-        <div>
+        <div *ngIf="canRegister=='true'">
          <a class="btn btn-link" (click)="forRegister=true;" ><b>Join Us </b>If you are new here</a>
         </div>
       </div>
@@ -46,7 +46,7 @@
     <!-- /////////////Register Form ///////////// -->
    
       <div [hidden]="!forRegister" style="padding:30px;" class="aMargin col-md-12 col-xs-12 col-lg-6">
-        <h2 class="text-center font-weight-bold">JOIN US</h2>
+        <h2  class="text-center font-weight-bold">JOIN US</h2>
 
         <form (submit)="onRegister()" class="form"  method="post" #Register="ngForm" accept-charset="UTF-8" id="Register">
           <div style="margin-top:20px;" class="form-group">
