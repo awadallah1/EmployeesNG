@@ -49,8 +49,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-
+                        <!-- <div class="form-group">
                             <input placeholder="Conuntry" name='country' required [(ngModel)]="employee.country" type="text" class="form-control" id="country"
                                 required #country="ngModel">
                             <div *ngIf="country.invalid && (country.dirty || country.touched)" class="alert alert-danger">
@@ -58,7 +57,20 @@
                                     Country is required.
                                 </div>
                             </div>
+                        </div> -->
+
+                        <div class="form-group">
+                            <mat-form-field class="col-lg-4 col-xs-12">
+                                <input class="text-success font-weight-bold" type="text" placeholder="Pick one" aria-label="Number" matInput  [formControl]="myControl" [matAutocomplete]="auto">
+                                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                                  <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name">
+                                    {{option.name}}
+                                  </mat-option>
+                                                                   
+                                </mat-autocomplete>
+                              </mat-form-field>
                         </div>
+
                         <div class="form-group">
 
                             <input placeholder="City" name='city' required [(ngModel)]="employee.city" type="text" class="form-control" id="city" required
@@ -119,7 +131,8 @@
 
                                         <div class="col-lg-9 col-7">
                                             <img style="margin-left:20px;" *ngIf="url" class="rounded-circle" src="{{url}}" height="100px" width="100px">
-                                            <img style="margin-left:20px;" *ngIf="!url && !myEvent && employee.image" class="rounded-circle" src="{{employee.image}}" height="100px" width="100px">
+                                            <img style="margin-left:20px;" *ngIf="!url && !myEvent && employee.image" class="rounded-circle" src="{{employee.image}}"
+                                                height="100px" width="100px">
                                         </div>
                                     </div>
                                 </div>
@@ -130,8 +143,8 @@
                         <div class="text-center">
                             <button *ngIf="!forEdit" type="submit" class="btn btn-success font-weight-bold" [disabled]="!postForm.form.valid">{{btnTitle}}</button>
                             <button type="submit" *ngIf="forEdit" class="btn btn-success font-weight-bold" [disabled]="!postForm.form.valid">{{btnTitle}}</button>
-
                             <button style="margin-left:30px;" type="reset" (click)="url=''" class="btn btn-success font-weight-bold">Reset</button>
+                         
                         </div>
                     </form>
 

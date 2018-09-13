@@ -1,10 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from "@angular/router";
 import { HttpModule } from '@angular/http';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MyOwnCustomMaterialModule } from "../app/Material/MaterialComponents";
 import { ToastrModule } from 'ngx-toastr';
 
 import { SnotifyModule, SnotifyService, ToastDefaults } from 'ng-snotify';
@@ -37,6 +38,10 @@ import { FooterComponent } from './components/footer/footer.component';
 import { Globals } from './globals';
 import { SettingsService } from './services/settings.service';
 import { canRegisterGuard } from './core/canRegister.guard';
+import { AddressService } from './services/address.service';
+AddressService
+
+
 
 
 
@@ -71,9 +76,11 @@ const appRoutes: Routes = [
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpModule,
     SnotifyModule,
     BrowserAnimationsModule, // required animations module
+    MyOwnCustomMaterialModule,
     ToastrModule.forRoot(
       {
         timeOut: 3000,
@@ -92,7 +99,7 @@ const appRoutes: Routes = [
 
 
   ],
-  providers: [Globals,SettingsService,canRegisterGuard, EmployeeService, AngularFireDatabase, AngularFireAuth,
+  providers: [Globals,SettingsService,AddressService,canRegisterGuard, EmployeeService, AngularFireDatabase, AngularFireAuth,
     { provide: 'SnotifyToastConfig', useValue: ToastDefaults },
     SnotifyService, AuthService, AuthGuard],
   bootstrap: [AppComponent]

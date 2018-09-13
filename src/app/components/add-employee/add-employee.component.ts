@@ -4,13 +4,14 @@ import { ToastrService } from 'ngx-toastr';
 import { EmployeeService } from '../../services/employee.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from 'angularfire2/storage';
-import { finalize } from 'rxjs/operators';
+import { finalize, tap, count } from 'rxjs/operators';
 import { SnotifyService, SnotifyPosition, SnotifyToastConfig, SnotifyToast } from 'ng-snotify';
-
-import { Observable } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import { Observable, observable } from 'rxjs';
 import * as firebase from 'firebase/app'
 import { Globals } from '../../globals';
-
+import { map, startWith } from 'rxjs/operators';
+import { AddressService } from '../../services/address.service';
 
 @Component({
   selector: 'app-add-employee',
@@ -18,6 +19,9 @@ import { Globals } from '../../globals';
   styleUrls: ['./add-employee.component.css']
 })
 export class AddEmployeeComponent implements OnInit {
+  myControl = new FormControl();
+  countries = [];
+  filteredOptions: Observable<any[]>;
 
   ref: AngularFireStorageReference;
   task: AngularFireUploadTask;
@@ -39,9 +43,22 @@ export class AddEmployeeComponent implements OnInit {
 
 
 
-  constructor(private globals:Globals, private snotifyService: SnotifyService, private afStorage: AngularFireStorage, private _route: ActivatedRoute, private empService: EmployeeService, private _Router: Router, private toastr: ToastrService) { }
+  constructor(private address: AddressService, private globals: Globals, private snotifyService: SnotifyService, private afStorage: AngularFireStorage, private _route: ActivatedRoute, private empService: EmployeeService, private _Router: Router, private toastr: ToastrService) { }
+
+  _filter(value: string): any[] {
+    const filterValue = value.toLowerCase();
+
+    return this.countries.filter(country => country['name'].toLowerCase().indexOf(filterValue) === 0);
+
+  }
 
   public ngOnInit() {
+    this.getCountries();
+
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value))
+    )
 
     if (this.id) {
       this.btnTitle = 'Edit'
@@ -96,7 +113,7 @@ export class AddEmployeeComponent implements OnInit {
   onAsyncLoading(time: number) {
     const successAction = Observable.create(observer => {
     });
-    this.snotifyService.async('', 'Saving Data', successAction, {position: SnotifyPosition.centerCenter, showProgressBar: true });
+    this.snotifyService.async('', 'Saving Data', successAction, { position: SnotifyPosition.centerCenter, showProgressBar: true });
 
   }
 
@@ -131,7 +148,7 @@ export class AddEmployeeComponent implements OnInit {
           this.employee = {} as Employee;
           this.snotifyService.remove();
           this.toastr.success('Employee Added Successfully!', 'Employees', { timeOut: 3000 });
-          this.forEdit=false;
+          this.forEdit = false;
           this._Router.navigate(['/']);
         }, 2000);
 
@@ -151,7 +168,7 @@ export class AddEmployeeComponent implements OnInit {
         this.task = this.ref.put(this.myEvent.target.files[0]);
         this.task.snapshotChanges().pipe(
           finalize(() => {
-            
+
             this.downloadURL = this.ref.getDownloadURL()
             this.downloadURL.subscribe(url => {
               this.employee.$key = this.id;
@@ -162,29 +179,29 @@ export class AddEmployeeComponent implements OnInit {
               this.employee.city = value.city;
               this.employee.phone = value.phone;
               this.employee.salary = value.salary;
-              
+
               this.employee.image = url;
-              
+
               this.empService.updateEmployeeWithDelete(this.employee, this.oldImage)
-              
+
             });
           })
         ).subscribe();
 
       }
-      
+
       setTimeout(() => {
         this.toastr.success('Employee Updated Successfully!!', 'Employees', { timeOut: 3000 })
         this.employee = {} as Employee;
         this.snotifyService.remove();
-        this.forEdit=false;
+        this.forEdit = false;
         this._Router.navigate(['/'])
       }, 3000);
 
     }
   }
 
-  
+
 
   deleteImage() {
 
@@ -223,19 +240,31 @@ export class AddEmployeeComponent implements OnInit {
   }
 
   show() {
-    if(!this.oldImage){
+    if (!this.oldImage) {
       console.log('falseeeeee')
     }
-    if(this.oldImage){
+    if (this.oldImage) {
       console.log('trueeeeeeeee')
     }
-    
-    
   }
 
   delete(name: string) {
     const storageRef = firebase.storage().ref();
     storageRef.storage.refFromURL(name).delete();
-    
+
   }
+  filter = function () {
+    this.countries.filter(data => data['name'] == 'Egypt')
+  }
+
+  getCountries() {
+    // this.address.getCountries().subscribe(
+    //   next => { this.countries = next; }
+    // )
+    this.countries = this.address.getCountries()
+
+  }
+
+
+
 }
