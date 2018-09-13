@@ -264,6 +264,20 @@ export class AddEmployeeComponent implements OnInit {
     this.countries = this.address.getCountries()
 
   }
+  data = [];
+  cities: any[] = [];
+  getData() {
+    this.address.getCountry().subscribe(
+      next => {
+      this.data = next;
+        this.data.forEach(row => this.address.getCity(row['code']).subscribe(
+          city => { this.cities.push(city) }
+        )
+        )
+      }
+    )
+    
+  }
 
 
 
