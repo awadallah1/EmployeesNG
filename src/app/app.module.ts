@@ -76,7 +76,7 @@ const appRoutes: Routes = [
   imports: [
     BrowserModule,
     FormsModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule.withConfig({warnOnNgModelWithFormControl: 'never'}),
     HttpModule,
     SnotifyModule,
     BrowserAnimationsModule, // required animations module

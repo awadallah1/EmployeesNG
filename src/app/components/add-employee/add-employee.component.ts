@@ -20,8 +20,14 @@ import { AddressService } from '../../services/address.service';
 })
 export class AddEmployeeComponent implements OnInit {
   myControl = new FormControl();
+  countryError: boolean=false;
+  error:boolean=false;
+  country: string;
   countries = [];
-  filteredOptions: Observable<any[]>;
+  cities = [];
+  couteriesNames: string[] = [];
+  countryOptions: Observable<any[]>;
+  cityOptions: Observable<any[]>;
 
   ref: AngularFireStorageReference;
   task: AngularFireUploadTask;
@@ -33,8 +39,6 @@ export class AddEmployeeComponent implements OnInit {
   forEdit: boolean = false;
   picFile: File;
   myEvent: any;
-
-
   url: string
 
   id: string = this._route.snapshot.queryParams["id"];
@@ -52,13 +56,12 @@ export class AddEmployeeComponent implements OnInit {
 
   }
 
+
+
   public ngOnInit() {
     this.getCountries();
 
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value))
-    )
+
 
     if (this.id) {
       this.btnTitle = 'Edit'
@@ -253,31 +256,64 @@ export class AddEmployeeComponent implements OnInit {
     storageRef.storage.refFromURL(name).delete();
 
   }
-  filter = function () {
-    this.countries.filter(data => data['name'] == 'Egypt')
-  }
+
 
   getCountries() {
     // this.address.getCountries().subscribe(
     //   next => { this.countries = next; }
     // )
-    this.countries = this.address.getCountries()
-
-  }
-  data = [];
-  cities: any[] = [];
-  getData() {
-    this.address.getCountry().subscribe(
-      next => {
-      this.data = next;
-        this.data.forEach(row => this.address.getCity(row['code']).subscribe(
-          city => { this.cities.push(city) }
-        )
-        )
+    this.countries = this.address.getCountries();
+    this.countries.forEach(
+      row => {
+        this.couteriesNames.push(row['name'].toLowerCase());
       }
     )
-    
+    this.countryOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value))
+
+    )
+
+    console.log(this.couteriesNames);
+
   }
+  getCities() {
+    this.cities = this.address.getCities();
+  }
+
+  /// country change
+
+  checkCountry() {
+
+    if (this.couteriesNames.length && this.country) {
+      if (this.couteriesNames.indexOf(this.country.toLowerCase())>-1) {
+        this.countryError = false;
+        this.error=false;
+        console.log('Okkkkkkkkkkkkk')
+      } else {
+        this.countryError = true;
+        this.error=true;
+        }
+    } else {
+     return false;
+    }
+    console.log(this.error)
+  }
+
+  // data = [];
+  // cities: any[] = [];
+  // getData() {
+  //   this.address.getCountry().subscribe(
+  //     next => {
+  //     this.data = next;
+  //       this.data.forEach(row => this.address.getCity(row['code']).subscribe(
+  //         city => { this.cities.push(city) }
+  //       )
+  //       )
+  //     }
+  //   )
+
+  // }
 
 
 
