@@ -19,13 +19,20 @@ import { AddressService } from '../../services/address.service';
   styleUrls: ['./add-employee.component.css']
 })
 export class AddEmployeeComponent implements OnInit {
-  myControl = new FormControl();
-  countryError: boolean=false;
-  error:boolean=false;
+  myCountryControl = new FormControl();
+  myCityControl = new FormControl();
+  countryError: boolean = false;
+  cityError: boolean = false;
+  error: boolean = false;
   country: string;
+  countryCode: string;
+  city: string;
+  cityObject: {} = {}
   countries = [];
   cities = [];
+  filteredCities = [];
   couteriesNames: string[] = [];
+  citiesNames: string[] = [];
   countryOptions: Observable<any[]>;
   cityOptions: Observable<any[]>;
 
@@ -49,19 +56,25 @@ export class AddEmployeeComponent implements OnInit {
 
   constructor(private address: AddressService, private globals: Globals, private snotifyService: SnotifyService, private afStorage: AngularFireStorage, private _route: ActivatedRoute, private empService: EmployeeService, private _Router: Router, private toastr: ToastrService) { }
 
-  _filter(value: string): any[] {
+  _countryFilter(value: string): any[] {
     const filterValue = value.toLowerCase();
 
-    return this.countries.filter(country => country['name'].toLowerCase().indexOf(filterValue) === 0);
+    // return this.countries.filter(country => country['name'].toLowerCase().indexOf(filterValue) === 0);
+    return this.countries.filter(country => country['name'].toLowerCase().match(filterValue));
 
+  }
+
+  _cityFilter(value: string): any[] {
+    const filterValue = value.toLowerCase();
+
+    // return this.filteredCities.filter(city => city['region'].toLowerCase().indexOf(filterValue) === 0);
+    return this.filteredCities.filter(city => city['region'].toLowerCase().match(filterValue));
   }
 
 
 
   public ngOnInit() {
     this.getCountries();
-
-
 
     if (this.id) {
       this.btnTitle = 'Edit'
@@ -80,7 +93,8 @@ export class AddEmployeeComponent implements OnInit {
           this.employee.phone = employee.phone;
           this.employee.salary = employee.salary;
           this.employee.image = employee.image;
-
+          this.country = employee.country;
+          this.city = employee.city;
 
         } else {
           this.oldImage = '';
@@ -94,7 +108,8 @@ export class AddEmployeeComponent implements OnInit {
           this.employee.phone = employee.phone;
           this.employee.salary = employee.salary;
           this.employee.image = employee.image;
-
+          this.country = employee.country;
+          this.city = employee.city;
         }
       })
     } else {
@@ -122,6 +137,9 @@ export class AddEmployeeComponent implements OnInit {
 
   onsubmit({ value, valid }: { value: Employee, valid: boolean }) {
     if (valid && !this.forEdit) {
+      value.country = this.country;
+      value.city = this.city;
+
       if (this.myEvent) {
         this.onAsyncLoading(2400);
         const id = Math.random().toString(36).substring(2);
@@ -131,8 +149,9 @@ export class AddEmployeeComponent implements OnInit {
           finalize(() => {
             this.downloadURL = this.ref.getDownloadURL()
             this.downloadURL.subscribe(url => {
-
               value.image = url;
+
+
               this.empService.addEmployee(value);
               this.employee = {} as Employee;
               this.snotifyService.remove();
@@ -160,8 +179,9 @@ export class AddEmployeeComponent implements OnInit {
     }
 
     if (valid && this.forEdit) {
-
       if (!this.myEvent) {
+        this.employee.country = this.country;
+        this.employee.city = this.city;
         this.empService.updateEmployee(this.employee);
         this.onAsyncLoading(1000);
       } else {
@@ -178,8 +198,8 @@ export class AddEmployeeComponent implements OnInit {
               this.employee.firstName = value.firstName;
               this.employee.lastName = value.lastName;
               this.employee.email = value.email;
-              this.employee.country = value.country;
-              this.employee.city = value.city;
+              this.employee.country = this.country;
+              this.employee.city = this.city;
               this.employee.phone = value.phone;
               this.employee.salary = value.salary;
 
@@ -263,22 +283,33 @@ export class AddEmployeeComponent implements OnInit {
     //   next => { this.countries = next; }
     // )
     this.countries = this.address.getCountries();
+    this.cities = this.address.getCities();
     this.countries.forEach(
       row => {
         this.couteriesNames.push(row['name'].toLowerCase());
       }
     )
-    this.countryOptions = this.myControl.valueChanges.pipe(
+    this.countryOptions = this.myCountryControl.valueChanges.pipe(
       startWith(''),
-      map(value => this._filter(value))
+      map(value => this._countryFilter(value))
 
     )
 
-    console.log(this.couteriesNames);
+
 
   }
-  getCities() {
-    this.cities = this.address.getCities();
+  getFilteredCities() {
+    this.cities.forEach(
+      row => {
+        this.citiesNames.push(row['region'].toLowerCase());
+      }
+    )
+
+    this.cityOptions = this.myCityControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._cityFilter(value))
+
+    )
   }
 
   /// country change
@@ -286,20 +317,44 @@ export class AddEmployeeComponent implements OnInit {
   checkCountry() {
 
     if (this.couteriesNames.length && this.country) {
-      if (this.couteriesNames.indexOf(this.country.toLowerCase())>-1) {
+      this.city = '';
+      if (this.couteriesNames.indexOf(this.country.toLowerCase()) > -1) {
         this.countryError = false;
-        this.error=false;
-        console.log('Okkkkkkkkkkkkk')
+        this.error = false;
+        var result = this.countries.find(country => country.name.toLowerCase() === this.country.toLowerCase()) as Observable<any>;
+
+        this.filteredCities = this.cities.filter(city => city['country'].toLowerCase() == result['code'].toLowerCase());
+        
+        this.getFilteredCities();
       } else {
         this.countryError = true;
-        this.error=true;
-        }
+        this.error = true;
+      }
     } else {
-     return false;
+      return false;
     }
-    console.log(this.error)
   }
 
+  checkCity() {
+
+    if (this.citiesNames.length && this.city) {
+      if (this.citiesNames.indexOf(this.city.toLowerCase()) > -1) {
+        this.cityError = false;
+        this.error = false;
+      } else {
+        this.cityError = true;
+        this.error = true;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  alert() {
+    console.log(this.country)
+    console.log(this.city)
+    console.log(this.employee)
+  }
   // data = [];
   // cities: any[] = [];
   // getData() {

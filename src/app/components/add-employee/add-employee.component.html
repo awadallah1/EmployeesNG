@@ -27,7 +27,7 @@
                         </div>
 
                         <div class="form-group">
-                            <input placeholder="Last Name" name='lastName' required [(ngModel)]="employee.lastName"
+                            <input  placeholder="Last Name" name='lastName' required [(ngModel)]="employee.lastName"
                                 type="text" class="form-control" id="lastName" required minlength='3' #lastName="ngModel">
                             <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="alert alert-danger">
                                 <div *ngIf="lastName?.errors.required">
@@ -65,44 +65,39 @@
 
                             <!-- Country dropdown -->
                             <mat-form-field class="col-lg-4 col-xs-12">
-                                <input [ngClass]="countryError?'text-danger':'text-success'" (keyup)="checkCountry()" type="text" aria-label="country" matInput [formControl]="myControl"
-                                    [(ngModel)]="country" [matAutocomplete]="auto">
-                                <mat-placeholder *ngIf="countryError||!country" class="badge badge-danger">Select Country</mat-placeholder>
+                                <input [(ngModel)]="country" name="country" [ngClass]="countryError?'text-danger':'text-success'" (keyup)="checkCountry();"
+                                    type="text" aria-label="country" matInput [formControl]="myCountryControl"
+                                     [matAutocomplete]="auto">
+                                <mat-placeholder *ngIf="countryError||!country" class="badge badge-danger">Select
+                                    Country</mat-placeholder>
                                 <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-                                    <mat-option (click)="checkCountry()" *ngFor="let option of countryOptions | async"
+                                    <mat-option (click)="checkCountry();" *ngFor="let option of countryOptions | async"
                                         [value]="option.name">
                                         {{option.name}}
                                     </mat-option>
 
                                 </mat-autocomplete>
-
-
                             </mat-form-field>
-
-
-                            <!-- Country dropdown -->
-                            <!-- <mat-form-field class="col-lg-4 col-xs-12">
-                                <input class="text-success font-weight-bold" type="text" placeholder="City"
-                                    aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">
-                                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-                                    <mat-option *ngFor="let option of countryOptions | async" [value]="option.name">
-                                        {{option.name}}
+                            
+                            <!-- City dropdown -->
+                            <mat-form-field class="col-lg-4 col-xs-12">
+                                <input [ngClass]="cityError?'text-danger':'text-success'" (keyup)="checkCity()" type="text"
+                                    aria-label="city" matInput [formControl]="myCityControl" [(ngModel)]="city"
+                                    [matAutocomplete]="autoCity">
+                                <mat-placeholder *ngIf="cityError||!city" class="badge badge-danger">Select
+                                    City</mat-placeholder>
+                                <mat-autocomplete autoActiveFirstOption #autoCity="matAutocomplete">
+                                    <mat-option (click)="checkCity()" *ngFor="let option of cityOptions | async"
+                                        [value]="option.region">
+                                        {{option.region}}
                                     </mat-option>
 
                                 </mat-autocomplete>
-                            </mat-form-field> -->
+                            </mat-form-field>
+
+
                         </div>
 
-                        <div class="form-group">
-
-                            <input placeholder="City" name='city' required [(ngModel)]="employee.city" type="text"
-                                class="form-control" id="city" required #city="ngModel">
-                            <div *ngIf="city.invalid && (city.dirty || city.touched)" class="alert alert-danger">
-                                <div *ngIf="city?.errors.required">
-                                    City is required.
-                                </div>
-                            </div>
-                        </div>
                         <div class="form-group">
                             <input placeholder="Phone" name='phone' [(ngModel)]='employee.phone' type="tel" pattern="\d*"
                                 class="form-control" id="phone" required minlength='12' #phone="ngModel">
