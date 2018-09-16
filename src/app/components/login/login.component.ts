@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
     // })
     if(localStorage.getItem('canregister')){
       this.canRegister=localStorage.getItem('canregister')
-    }
+    }else this.canRegister='true';
     this.afAuth.auth.getRedirectResult().then(result => {
       if (result.user) {
         this.router.navigate(['/']);
