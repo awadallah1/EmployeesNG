@@ -56,21 +56,21 @@ export class AuthService {
   }
 
   facebookLogin() {
-       
+
     var provider = new firebase.auth.FacebookAuthProvider();
     // this.global.changeMessage('nice');
     this.afAuth.auth.signInWithRedirect(provider).then(
-      next=>{
+      next => {
         console.log(this.afAuth.auth.currentUser.photoURL)
         this.router.navigate(['dashboard']);
       }
     )
-    
-     
+
+
   }
-        
-          
-    
+
+
+
 
 
   twitterLogin() {
@@ -106,8 +106,8 @@ export class AuthService {
   emailSignUp(email: string, password: string) {
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
       .then(credential => {
-       this.emailLogin(email,password);
-       this.router.navigate(['/'])
+        this.emailLogin(email, password);
+        this.router.navigate(['/'])
       })
       .catch(error => this.toaster.error(error, 'Register'));
   }
@@ -117,7 +117,7 @@ export class AuthService {
       .signInWithEmailAndPassword(email, password)
       .then(credential => {
         this.toaster.success('Welcome to EmployeesNG!!!', 'success');
-       
+
       })
       .catch(error => this.handleError(error));
   }
@@ -128,8 +128,12 @@ export class AuthService {
 
     return fbAuth
       .sendPasswordResetEmail(email)
-      .then(() => this.toaster.success('Welcome to EmployeesNG!!!', 'success'))
-      .catch(error => this.handleError(error));
+      .then(() => {
+        
+        this.toaster.success('Check your email inbox now', 'success', { timeOut: 3000 });
+        
+      })
+      .catch(error => console.log(error));
   }
 
   /// signout and clear localstorrage Items
@@ -189,8 +193,8 @@ export class AuthService {
     )
   }
 
-  set(picture:string){
-    this.afAuth.auth.currentUser.updateProfile({displayName:null, photoURL:picture})
+  set(picture: string) {
+    this.afAuth.auth.currentUser.updateProfile({ displayName: null, photoURL: picture })
   }
 
   signOut() {

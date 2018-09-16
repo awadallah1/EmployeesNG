@@ -8,74 +8,107 @@
       <div class="text-center btn-group-lg ">
         <a id="facebook" (click)="signInWithFacebook()" class="btn btn-fb d-inline-block"><i class="fa fa-facebook"></i>
           Facebook</a><br>
-        <a id="google" (click)="signInWithGoogle()" class="btn btn-go d-inline-block"><i class="fa fa-google-plus"></i> Google</a><br>
+        <a id="google" (click)="signInWithGoogle()" class="btn btn-go d-inline-block"><i class="fa fa-google-plus"></i>
+          Google</a><br>
         <a href="#" class="btn btn-tw d-inline-block"><i class="fa fa-twitter"></i> Twitter</a>
       </div>
     </div>
 
     <!-- /////////////Email/Password Login Form ///////////// -->
 
-      <div [hidden]="forRegister" style="padding:30px;" class="aMargin col-md-12 col-xs-12 col-lg-6">
-        <h2 class="text-center font-weight-bold">Account Login</h2>
+    <div [hidden]="!forLogin" style="padding:30px;" class="aMargin col-md-12 col-xs-12 col-lg-6">
+      <h2 class="text-center font-weight-bold">Account Login</h2>
 
-        <form (submit)="onSubmit()" class="form" role="form" method="post" accept-charset="UTF-8" id="login">
-          <div style="margin-top:20px;" class="form-group">
-            <label class="sr-only" for="exampleInputEmail2">Email address</label>
-            <input name="email" [(ngModel)]="email" type="email" class="form-control" id="email" placeholder="Email address" required>
-          </div>
-          <div class="form-group">
-            <label class="sr-only" for="exampleInputPassword2">Password</label>
-            <input name="password" [(ngModel)]="password" type="password" class="form-control" id="password" placeholder="Password" required>
-            <div class="text-info"><a href="">Forget the password ?</a></div>
-          </div>
-          <div class="form-group">
-            <button type="submit" class="btn btn-outline-primary btn-block">Sign in</button>
-          </div>
-          <div class="checkbox">
+      <form  (submit)="onSubmit()" class="form" role="form" method="post" accept-charset="UTF-8" id="login">
+        <div style="margin-top:20px;" class="form-group">
+          <label class="sr-only" for="exampleInputEmail2">Email address</label>
+          <input name="email" [(ngModel)]="email" type="email" class="form-control" id="email" placeholder="Email address"
+            required>
+        </div>
+        <div class="form-group">
+          <label class="sr-only" for="exampleInputPassword2">Password</label>
+          <input name="password" [(ngModel)]="password" type="password" class="form-control" id="password" placeholder="Password"
+            required>
+         
+          <a class="btn btn-link" (click)="forReset=true;forLogin=false;resetEmail='';"><b>Forget the password ? </b></a>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-outline-primary btn-block">Sign in</button>
+        </div>
+        <!-- <div class="checkbox">
             <label>
               <input type="checkbox"> keep me logged-in
             </label>
-          </div>
-        </form>
-        <div *ngIf="canRegister=='true'">
-         <a class="btn btn-link" (click)="forRegister=true;" ><b>Join Us </b>If you are new here</a>
-        </div>
+          </div> -->
+      </form>
+      <div *ngIf="canRegister=='true'">
+        <a class="btn btn-link" (click)="forRegister=true;forLogin=false"><b>Join Us </b>If you are new here</a>
       </div>
+    </div>
 
-  
+    <!-- /////////////Reset Password ///////////// -->
+
+    <div [hidden]="!forReset" style="padding:30px;" class="aMargin col-md-12 col-xs-12 col-lg-6">
+      <h2 class="text-center font-weight-bold">Reset Password</h2>
+
+      <form (submit)="resetPassword()" class="form" role="form" method="post" accept-charset="UTF-8" id="resetPassword">
+        <div style="margin-top:20px;" class="form-group">
+          <label class="sr-only" for="exampleInputEmail2">Email address</label>
+          <input name="email" [(ngModel)]="resetEmail" type="email" class="form-control" id="resetEmail" placeholder="Enter your email address"
+            required>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-outline-primary btn-block">Reset Password</button>
+        </div>
+        <!-- <div class="checkbox">
+            <label>
+              <input type="checkbox"> keep me logged-in
+            </label>
+          </div> -->
+          <a class="btn btn-link" (click)="forRegister=false;forReset=false;forLogin=true"><b>Login </b>If you have account</a>
+      </form>
+      <div *ngIf="canRegister=='true' && forLogin==true">
+        <a class="btn btn-link" (click)="forRegister=true;forLogin=false;"><b>Join Us </b>If you are new here</a>
+      </div>
+    </div>
+
+
     <!-- /////////////Register Form ///////////// -->
-   
-      <div [hidden]="!forRegister" style="padding:30px;" class="aMargin col-md-12 col-xs-12 col-lg-6">
-        <h2  class="text-center font-weight-bold">JOIN US</h2>
 
-        <form (submit)="onRegister()" class="form"  method="post" #Register="ngForm" accept-charset="UTF-8" id="Register">
-          <div style="margin-top:20px;" class="form-group">
-            <label class="sr-only" for="exampleInputEmail2">Email address</label>
-            <input name="Remail" [(ngModel)]="rEmail" type="email" class="form-control" id="Remail" placeholder="Email address" required>
-          </div>
-          <div class="form-group">
-            <label class="sr-only" for="exampleInputPassword2">Password</label>
-            <input #Rpassword="ngModel" name="p1" [(ngModel)]="rPassword" type="password" class="form-control" id="Rpassword" placeholder="Password" required (keyup)="onChange()">
+    <div [hidden]="!forRegister" style="padding:30px;" class="aMargin col-md-12 col-xs-12 col-lg-6">
+      <h2 class="text-center font-weight-bold">JOIN US</h2>
 
-          </div>
-          <div class="form-group">
-            <label class="sr-only" for="exampleInputPassword2">Confirm Password</label>
-            <input #Rcpassword="ngModel" [(ngModel)]="rcPassword" name="p2"  type="password" class="form-control" id="Rcpassword" placeholder="Confirm Password"
-              required (keyup)="onChange()">
-             
-              <div *ngIf="(Rcpassword.dirty || Rcpassword.touched) &&(Rcpassword.value!= Rpassword.value)" class="alert alert-danger">
-                Not same password
-            </div>
-            
+      <form (submit)="onRegister()" class="form" method="post" #Register="ngForm" accept-charset="UTF-8" id="Register">
+        <div style="margin-top:20px;" class="form-group">
+          <label class="sr-only" for="exampleInputEmail2">Email address</label>
+          <input name="Remail" [(ngModel)]="rEmail" type="email" class="form-control" id="Remail" placeholder="Email address"
+            required>
+        </div>
+        <div class="form-group">
+          <label class="sr-only" for="exampleInputPassword2">Password</label>
+          <input #Rpassword="ngModel" name="p1" [(ngModel)]="rPassword" type="password" class="form-control" id="Rpassword"
+            placeholder="Password" required (keyup)="onChange()">
 
-          </div>
-          <div class="form-group">
-            <button type="submit" class="btn btn-outline-primary btn-block font-weight-bold" [disabled]="!Register.form.valid || !equal">Join Us</button>
+        </div>
+        <div class="form-group">
+          <label class="sr-only" for="exampleInputPassword2">Confirm Password</label>
+          <input #Rcpassword="ngModel" [(ngModel)]="rcPassword" name="p2" type="password" class="form-control" id="Rcpassword"
+            placeholder="Confirm Password" required (keyup)="onChange()">
+
+          <div *ngIf="(Rcpassword.dirty || Rcpassword.touched) &&(Rcpassword.value!= Rpassword.value)" class="alert alert-danger">
+            Not same password
           </div>
 
-        </form>
 
-     
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-outline-primary btn-block font-weight-bold" [disabled]="!Register.form.valid || !equal">Join
+            Us</button>
+        </div>
+        <a class="btn btn-link" (click)="forRegister=false;forLogin=true"><b>Login </b>If you have account</a>
+      </form>
+
+
 
     </div>
 

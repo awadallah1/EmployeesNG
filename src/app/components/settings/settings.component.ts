@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { SettingsService } from '../../services/settings.service';
 import { Setting } from "../../interfaces/setting";
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
+
 
 
 @Component({
@@ -13,7 +16,7 @@ export class SettingsComponent implements OnInit {
 
   setting: Setting;
 
-  constructor(private settings: SettingsService) { }
+  constructor(private settings: SettingsService, private router : Router, private toaster: ToastrService) { }
 
   ngOnInit() {
     if (localStorage.getItem('ngSettings')) {
@@ -39,6 +42,9 @@ export class SettingsComponent implements OnInit {
   mySubmit() {
 
     this.settings.changeSetting(this.setting);
+    this.toaster.success("Settings saved successfully","EmployeesNG",{timeOut:2000});
+    this.router.navigate(['/'])
+    
 
   }
 

@@ -7,11 +7,6 @@ import { Globals } from "../../globals";
 import { Setting } from "../../interfaces/setting";
 import { SettingsService } from "../../services/settings.service";
 
-
-
-
-
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -20,7 +15,7 @@ import { SettingsService } from "../../services/settings.service";
 export class LoginComponent implements OnInit, AfterViewInit {
 
   setting: Setting;
-  canRegister: string = localStorage.getItem('canregister')
+  canRegister: string = 'true';
   email: string;
   password: string;
   rPassword: string;
@@ -28,6 +23,10 @@ export class LoginComponent implements OnInit, AfterViewInit {
   rEmail: string;
   equal: boolean = false;
   forRegister = false;
+  forLogin=true;
+  forReset=false;
+  resetEmail:string;
+  
 
 
   socialAuth: boolean = false; // show Google and FB Sign in only when social auth is enabled
@@ -50,7 +49,9 @@ export class LoginComponent implements OnInit, AfterViewInit {
     //   }
 
     // })
-
+    if(localStorage.getItem('canregister')){
+      this.canRegister=localStorage.getItem('canregister')
+    }
     this.afAuth.auth.getRedirectResult().then(result => {
       if (result.user) {
         this.router.navigate(['/']);
@@ -102,10 +103,10 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   }
 
-  // async signInWithTwitter() {
-  //   await this.auth.twitterLogin();
-  //   return await this.afterSignIn();
-  // }
+  async signInWithTwitter() {
+    await this.auth.twitterLogin();
+    return await this.afterSignIn();
+  }
 
   // login with email and password
   onSubmit() {
@@ -162,6 +163,14 @@ export class LoginComponent implements OnInit, AfterViewInit {
       this.equal = false;
 
     }
+  }
+
+  resetPassword(){
+    this.auth.resetPassword(this.resetEmail).then(
+      ()=>{this.forLogin=true;
+        this.forReset=false;}
+    )
+
   }
 
 }
