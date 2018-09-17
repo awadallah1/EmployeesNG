@@ -140,7 +140,7 @@ export class AddEmployeeComponent implements OnInit {
       value.country = this.country;
       value.city = this.city;
       if (this.myEvent) {
-        // this.onAsyncLoading(2400);
+        this.onAsyncLoading(2400);
         const id = Math.random().toString(36).substring(2);
         this.ref = this.afStorage.ref(id);
         this.task = this.ref.put(this.myEvent.target.files[0]);
@@ -153,14 +153,14 @@ export class AddEmployeeComponent implements OnInit {
               this.employee = {} as Employee;
               this.snotifyService.remove();
               this.toastr.success('Employee Added Successfully!', 'Employees', { timeOut: 2000 });
-              this._Router.navigate(['up']);
+              this._Router.navigate(['/up']);
 
             });
           })
         )
           .subscribe();
       } else {
-        // this.onAsyncLoading(1000);
+        this.onAsyncLoading(1000);
         setTimeout(() => {
           value.image = '';
           this.empService.addEmployee(value);
@@ -168,7 +168,7 @@ export class AddEmployeeComponent implements OnInit {
           this.snotifyService.remove();
           this.toastr.success('Employee Added Successfully!', 'Employees', { timeOut: 2000 });
           this.forEdit = false;
-          this._Router.navigate(['up']);
+          this._Router.navigate(['/up']);
         }, 200);
 
 
@@ -182,7 +182,7 @@ export class AddEmployeeComponent implements OnInit {
         this.empService.updateEmployee(this.employee);
         this.onAsyncLoading(1000);
       } else {
-        // this.onAsyncLoading(2000);
+        this.onAsyncLoading(2000);
         const id = Math.random().toString(36).substring(2);
         this.ref = this.afStorage.ref(id);
         this.task = this.ref.put(this.myEvent.target.files[0]);
@@ -211,7 +211,7 @@ export class AddEmployeeComponent implements OnInit {
         this.employee = {} as Employee;
         this.snotifyService.remove();
         this.forEdit = false;
-        this._Router.navigate(['up'])
+        this._Router.navigate(['/up'])
       }, 200);
 
     }
@@ -253,12 +253,12 @@ export class AddEmployeeComponent implements OnInit {
   }
 
   show() {
-    if (!this.oldImage) {
-      console.log('falseeeeee')
-    }
-    if (this.oldImage) {
-      console.log('trueeeeeeeee')
-    }
+    // if (!this.oldImage) {
+    //   console.log('falseeeeee')
+    // }
+    // if (this.oldImage) {
+    //   console.log('trueeeeeeeee')
+    // }
   }
 
   delete(name: string) {

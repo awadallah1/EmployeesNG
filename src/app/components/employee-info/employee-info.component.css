@@ -2,3 +2,8 @@ div.float-left{
 margin: 15px;
 
 }
+
+.my-auto{
+    margin-top: auto;
+margin-bottom: auto;
+}

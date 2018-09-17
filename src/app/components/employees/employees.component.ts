@@ -32,7 +32,7 @@ export class EmployeesComponent implements OnInit {
           });
 
         })
-    }, 100);
+    }, 200);
 
 
   }

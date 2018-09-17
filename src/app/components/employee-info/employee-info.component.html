@@ -2,8 +2,9 @@
 
   <ng-container *ngIf="employee.$key; else elseTemplate">
     <div class="card text-white bg-dark mb-3">
-      <div class="lead card-header">
-        <h3>{{employee.firstName}}{{' '}}{{employee.lastName}}</h3>
+      <div  class="align-middle lead card-header">
+        <h3>{{employee.firstName}}{{' '}}{{employee.lastName}} <img *ngIf="employee.image" width="70px" height="70px" src="{{employee.image}}" class="rounded-circle pull-right small" ></h3>
+        
       </div>
       <div class="row">
         <div class="col-md-9">

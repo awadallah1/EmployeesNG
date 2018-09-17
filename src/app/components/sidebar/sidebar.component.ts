@@ -48,7 +48,7 @@ export class SidebarComponent implements OnInit {
           )
 
           this.snotify.remove();
-          this.snotify.success('Employee Deleted Successfully.', 'Employees', { showProgressBar: false, position: SnotifyPosition.rightTop, timeout: 1000 });
+          this.snotify.success('Employee Deleted Successfully.', 'Employees', { showProgressBar: false, position: SnotifyPosition.rightTop, timeout: 2000 });
           this.router.navigate(['up']);
         }
       },
