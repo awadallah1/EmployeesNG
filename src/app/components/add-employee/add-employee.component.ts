@@ -139,9 +139,8 @@ export class AddEmployeeComponent implements OnInit {
     if (valid && !this.forEdit) {
       value.country = this.country;
       value.city = this.city;
-
       if (this.myEvent) {
-        this.onAsyncLoading(2400);
+        // this.onAsyncLoading(2400);
         const id = Math.random().toString(36).substring(2);
         this.ref = this.afStorage.ref(id);
         this.task = this.ref.put(this.myEvent.target.files[0]);
@@ -150,29 +149,27 @@ export class AddEmployeeComponent implements OnInit {
             this.downloadURL = this.ref.getDownloadURL()
             this.downloadURL.subscribe(url => {
               value.image = url;
-
-
               this.empService.addEmployee(value);
               this.employee = {} as Employee;
               this.snotifyService.remove();
-              this.toastr.success('Employee Added Successfully!', 'Employees', { timeOut: 3000 });
-              this._Router.navigate(['/']);
+              this.toastr.success('Employee Added Successfully!', 'Employees', { timeOut: 2000 });
+              this._Router.navigate(['up']);
 
             });
           })
         )
           .subscribe();
       } else {
-        this.onAsyncLoading(1000);
+        // this.onAsyncLoading(1000);
         setTimeout(() => {
           value.image = '';
           this.empService.addEmployee(value);
           this.employee = {} as Employee;
           this.snotifyService.remove();
-          this.toastr.success('Employee Added Successfully!', 'Employees', { timeOut: 3000 });
+          this.toastr.success('Employee Added Successfully!', 'Employees', { timeOut: 2000 });
           this.forEdit = false;
-          this._Router.navigate(['/']);
-        }, 2000);
+          this._Router.navigate(['up']);
+        }, 200);
 
 
       }
@@ -185,13 +182,12 @@ export class AddEmployeeComponent implements OnInit {
         this.empService.updateEmployee(this.employee);
         this.onAsyncLoading(1000);
       } else {
-        this.onAsyncLoading(2000);
+        // this.onAsyncLoading(2000);
         const id = Math.random().toString(36).substring(2);
         this.ref = this.afStorage.ref(id);
         this.task = this.ref.put(this.myEvent.target.files[0]);
         this.task.snapshotChanges().pipe(
           finalize(() => {
-
             this.downloadURL = this.ref.getDownloadURL()
             this.downloadURL.subscribe(url => {
               this.employee.$key = this.id;
@@ -202,9 +198,7 @@ export class AddEmployeeComponent implements OnInit {
               this.employee.city = this.city;
               this.employee.phone = value.phone;
               this.employee.salary = value.salary;
-
               this.employee.image = url;
-
               this.empService.updateEmployeeWithDelete(this.employee, this.oldImage)
 
             });
@@ -212,20 +206,16 @@ export class AddEmployeeComponent implements OnInit {
         ).subscribe();
 
       }
-
       setTimeout(() => {
-        this.toastr.success('Employee Updated Successfully!!', 'Employees', { timeOut: 3000 })
+        this.toastr.success('Employee Updated Successfully!!', 'Employees', { timeOut: 2000 })
         this.employee = {} as Employee;
         this.snotifyService.remove();
         this.forEdit = false;
-        this._Router.navigate(['/'])
-      }, 3000);
+        this._Router.navigate(['up'])
+      }, 200);
 
     }
   }
-
-
-
   deleteImage() {
 
     this.empService.deleteImage(this.oldImage)
@@ -322,9 +312,7 @@ export class AddEmployeeComponent implements OnInit {
         this.countryError = false;
         this.error = false;
         var result = this.countries.find(country => country.name.toLowerCase() === this.country.toLowerCase()) as Observable<any>;
-
         this.filteredCities = this.cities.filter(city => city['country'].toLowerCase() == result['code'].toLowerCase());
-        
         this.getFilteredCities();
       } else {
         this.countryError = true;

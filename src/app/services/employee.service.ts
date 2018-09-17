@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 //Angular Fire store  Uploading Files
 import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from 'angularfire2/storage';
 import { Employee } from "../interfaces/Employee";
-
 import * as firebase from 'firebase/app'
 
 
@@ -72,25 +71,20 @@ export class EmployeeService {
         if (name) {
           this.deleteImage(name);
         }
-
       });
   }
 
-  deleteEmployee(id,name) {
-    this.empList.remove(id);
+  deleteEmployee(id, name) {
+    this.empList.remove(id)
     if (name) {
       this.deleteImage(name);
     }
   }
 
-
-
   public deleteImage(name: string) {
     const storageRef = firebase.storage().ref();
     storageRef.storage.refFromURL(name).delete();
-    
-
-  }
+ }
 
 
 }

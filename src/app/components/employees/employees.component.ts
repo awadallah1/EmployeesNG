@@ -10,35 +10,43 @@ import * as $ from 'jquery';
 })
 export class EmployeesComponent implements OnInit {
 
-  employees: Employee[] = [];
-  totalEmployees: number = 0
-  totalSalaries: number = 0
+  employees: Employee[] = null;
+  totalEmployees: number = 0;
+  totalSalaries: number = 0;
 
 
-  constructor(public empService: EmployeeService) {
+  constructor(private empService: EmployeeService) {
 
-    empService.empList.snapshotChanges()
-      .subscribe(actions => {
-        actions.forEach(action => {
-          let y = action.payload.toJSON()
-          y["$key"] = action.key
-          this.employees.push(y as Employee)
-        }); this.getTotals();
-      })
+    setTimeout(() => {
+      this.empService.empList.snapshotChanges()
+        .subscribe(actions => {
+          this.employees = []
+          this.totalEmployees = 0
+          this.totalSalaries = 0
+          actions.forEach(action => {
+            let y = action.payload.toJSON()
+            y["$key"] = action.key
+            this.employees.push(y as Employee)
+            this.totalEmployees += 1;
+            this.totalSalaries += parseFloat(y["salary"].toString());
+          });
+
+        })
+    }, 100);
+
 
   }
 
   ngOnInit() {
-    
 
   }
 
-  getTotals() {
-    for (let index = 0; index < this.employees.length; index++) {
-      this.totalEmployees += 1;
-      this.totalSalaries += parseFloat(this.employees[index].salary.toString());
-    }
-  }
+  // getTotals() {
+  //   for (let index = 0; index < this.employees.length; index++) {
+  //     this.totalEmployees += 1;
+  //     this.totalSalaries += parseFloat(this.employees[index].salary.toString());
+  //   }
+  // }
 
 
 
