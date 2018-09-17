@@ -55,7 +55,8 @@ const appRoutes: Routes = [
   { path: 'add-employee', component: AddEmployeeComponent, canActivate: [AuthGuard] },
 
   // { path: '',   redirectTo: '', pathMatch: 'full' },
-  { path: '**', component: PageNotFoundComponent, canActivate: [AuthGuard] }
+  // { path: '**', component: PageNotFoundComponent }
+  { path: '**', redirectTo: '#', pathMatch: 'full' }
 ];
 @NgModule({
   declarations: [

@@ -59,7 +59,8 @@ export class AuthService {
 
     var provider = new firebase.auth.FacebookAuthProvider();
     // this.global.changeMessage('nice');
-    this.afAuth.auth.signInWithRedirect(provider).then(
+    // this.afAuth.auth.signInWithRedirect(provider).then(
+    this.afAuth.auth.signInWithPopup(provider).then(
       next => {
         console.log(this.afAuth.auth.currentUser.photoURL)
         this.router.navigate(['dashboard']);
