@@ -27,7 +27,7 @@
                         </div>
 
                         <div class="form-group">
-                            <input  placeholder="Last Name" name='lastName' required [(ngModel)]="employee.lastName"
+                            <input placeholder="Last Name" name='lastName' required [(ngModel)]="employee.lastName"
                                 type="text" class="form-control" id="lastName" required minlength='3' #lastName="ngModel">
                             <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="alert alert-danger">
                                 <div *ngIf="lastName?.errors.required">
@@ -65,9 +65,9 @@
 
                             <!-- Country dropdown -->
                             <mat-form-field class="col-lg-4 col-xs-12">
-                                <input [(ngModel)]="country" name="country" [ngClass]="countryError?'text-danger':'text-success'" (keyup)="checkCountry();"
-                                    type="text" aria-label="country" matInput [formControl]="myCountryControl"
-                                     [matAutocomplete]="auto">
+                                <input [(ngModel)]="country" name="country" [ngClass]="countryError?'text-danger':'text-success'"
+                                    (keyup)="checkCountry();" type="text" aria-label="country" matInput [formControl]="myCountryControl"
+                                    [matAutocomplete]="auto">
                                 <mat-placeholder *ngIf="countryError||!country" class="badge badge-danger">Select
                                     Country</mat-placeholder>
                                 <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
@@ -78,7 +78,7 @@
 
                                 </mat-autocomplete>
                             </mat-form-field>
-                            
+
                             <!-- City dropdown -->
                             <mat-form-field class="col-lg-4 col-xs-12">
                                 <input [ngClass]="cityError?'text-danger':'text-success'" (keyup)="checkCity()" type="text"
@@ -123,8 +123,9 @@
                                     <span class="input-group-text"><i class="fa fa-dollar"></i></span>
                                 </div>
 
-                                <input  min="0" oninput="validity.valid||(value='')" placeholder="Salary" name='salary' [(ngModel)]='employee.salary' type="number"
-                                    class="form-control" id="salary" required #salary="ngModel">
+                                <input min="0" oninput="validity.valid||(value='')" placeholder="Salary" name='salary'
+                                    [(ngModel)]='employee.salary' type="number" class="form-control" id="salary"
+                                    required #salary="ngModel">
 
                             </div>
 
@@ -132,13 +133,14 @@
                                 <div *ngIf="salary?.errors.required">
                                     Salary is required.
                                 </div>
-                                
+
                             </div>
 
                         </div>
                         <div>
 
-                            <input accept=".png,.jpg,.jpeg,.gif" #upload [hidden]="true" type='file' (change)="onSelectFile($event);">
+                            <!-- <input accept=".png,.jpg,.jpeg,.gif" #upload [hidden]="true" type='file' (change)="onSelectFile($event);"> -->
+                            <input type="file" [hidden]="true" #upload (change)="onImageChange($event)" accept="image/*">
                             <div class="row" style="min-height: 110px;">
                                 <div class="col-12">
                                     <div class="row">
@@ -149,14 +151,16 @@
                                         </div>
 
                                         <div class="col-lg-9 col-7">
-                                            <img style="margin-left:20px;" *ngIf="url" class="rounded-circle" src="{{url}}"
-                                                height="100px" width="100px">
-                                            <img style="margin-left:20px;" *ngIf="!url && !myEvent && employee.image"
-                                                class="rounded-circle" src="{{employee.image}}" height="100px" width="100px">
+                                            <div *ngIf="load" ><app-loading></app-loading></div>
+                                            <img style="margin-top:0px;margin-left:0px;margin-bottom: 70px;"
+                                                *ngIf="url" class="rounded-circle" [src]="sanitizer.bypassSecurityTrustUrl(url)"
+                                                height="100px" width="100px" alt='Nooo First Image'> 
+                                            <img style="margin-top:0px;margin-left:0px;margin-bottom: 70px;"
+                                                *ngIf="!url && !myEvent && employee.image" alt='Noooo image' class="rounded-circle"
+                                                src="{{employee.image}}" height="100px" width="100px">
                                         </div>
                                     </div>
                                 </div>
-
 
                             </div>
                         </div>

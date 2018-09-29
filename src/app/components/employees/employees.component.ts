@@ -10,7 +10,7 @@ import * as $ from 'jquery';
 })
 export class EmployeesComponent implements OnInit {
 
-  employees: Employee[] = null;
+  employees: Employee[] = [];
   totalEmployees: number = 0;
   totalSalaries: number = 0;
 

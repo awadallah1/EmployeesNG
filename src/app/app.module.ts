@@ -39,11 +39,8 @@ import { Globals } from './globals';
 import { SettingsService } from './services/settings.service';
 import { canRegisterGuard } from './core/canRegister.guard';
 import { AddressService } from './services/address.service';
-AddressService
-
-
-
-
+import { Ng2ImgMaxModule } from 'ng2-img-max';
+import { LoadingComponent } from './animations/loading/loading.component';
 
 const appRoutes: Routes = [
 
@@ -72,7 +69,8 @@ const appRoutes: Routes = [
     SettingsComponent,
     PageNotFoundComponent,
     EmployeesComponent,
-    FooterComponent
+    FooterComponent,
+    LoadingComponent
   ],
   imports: [
     BrowserModule,
@@ -97,7 +95,7 @@ const appRoutes: Routes = [
     AngularFirestoreModule, // imports firebase/firestore, only needed for database features
     // AngularFireAuthModule, // imports firebase/auth, only needed for auth features,
     AngularFireStorageModule,  // imports firebase/storage only needed for storage features
-
+    Ng2ImgMaxModule // Resize Image size before uploading to firestore 
 
   ],
   providers: [Globals,SettingsService,AddressService,canRegisterGuard, EmployeeService, AngularFireDatabase, AngularFireAuth,

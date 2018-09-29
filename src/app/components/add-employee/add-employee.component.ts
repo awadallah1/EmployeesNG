@@ -12,13 +12,17 @@ import * as firebase from 'firebase/app'
 import { Globals } from '../../globals';
 import { map, startWith } from 'rxjs/operators';
 import { AddressService } from '../../services/address.service';
-
+import { Ng2ImgMaxService } from 'ng2-img-max';
+import { DomSanitizer } from '@angular/platform-browser';
 @Component({
   selector: 'app-add-employee',
   templateUrl: './add-employee.component.html',
   styleUrls: ['./add-employee.component.css']
 })
 export class AddEmployeeComponent implements OnInit {
+  load='';
+  reader = new FileReader();
+  uploadedImage: File; //image resize
   myCountryControl = new FormControl();
   myCityControl = new FormControl();
   countryError: boolean = false;
@@ -54,7 +58,7 @@ export class AddEmployeeComponent implements OnInit {
 
 
 
-  constructor(private address: AddressService, private globals: Globals, private snotifyService: SnotifyService, private afStorage: AngularFireStorage, private _route: ActivatedRoute, private empService: EmployeeService, private _Router: Router, private toastr: ToastrService) { }
+  constructor(public sanitizer: DomSanitizer, private ng2ImgMax: Ng2ImgMaxService, private address: AddressService, private globals: Globals, private snotifyService: SnotifyService, private afStorage: AngularFireStorage, private _route: ActivatedRoute, private empService: EmployeeService, private _Router: Router, private toastr: ToastrService) { }
 
   _countryFilter(value: string): any[] {
     const filterValue = value.toLowerCase();
@@ -143,7 +147,7 @@ export class AddEmployeeComponent implements OnInit {
         this.onAsyncLoading(2400);
         const id = Math.random().toString(36).substring(2);
         this.ref = this.afStorage.ref(id);
-        this.task = this.ref.put(this.myEvent.target.files[0]);
+        this.task = this.ref.put(this.uploadedImage, { contentType: 'image/jpeg' });
         this.task.snapshotChanges().pipe(
           finalize(() => {
             this.downloadURL = this.ref.getDownloadURL()
@@ -174,7 +178,7 @@ export class AddEmployeeComponent implements OnInit {
 
       }
     }
-//if form for edit
+
     if (valid && this.forEdit) {
       if (!this.myEvent) {
         this.employee.country = this.country;
@@ -185,7 +189,7 @@ export class AddEmployeeComponent implements OnInit {
         this.onAsyncLoading(2000);
         const id = Math.random().toString(36).substring(2);
         this.ref = this.afStorage.ref(id);
-        this.task = this.ref.put(this.myEvent.target.files[0]);
+        this.task = this.ref.put(this.uploadedImage, { contentType: 'image/jpeg' });
         this.task.snapshotChanges().pipe(
           finalize(() => {
             this.downloadURL = this.ref.getDownloadURL()
@@ -224,33 +228,65 @@ export class AddEmployeeComponent implements OnInit {
 
   ///display image of input file
   onSelectFile(event) { // called each time file input changes
-
     if (event.target.files && event.target.files[0]) {
       var reader = new FileReader();
-      // if (!localStorage.getItem('myFile') || localStorage.getItem('myFile') == '')
-
-
       reader.readAsDataURL(event.target.files[0]); // read file as data url
-
       reader.onload = () => {
         if (!event.target.files[0].name.match(/.(jpg|jpeg|png|gif)$/i)) {
-          this.toastr.error('image should be JPG|JPEG|PNG|GIF', 'Employees', { timeOut: 5000 });
+          this.toastr.error('image should be JPG|JPEG|PNG|GIF', 'Employees', { timeOut: 3000 });
           this.url = '';
         }
         else {
           if (event.target.files[0].size > 100000) {
-            this.toastr.error('image should be not more than 100kb', 'Employees', { timeOut: 5000 });
+            this.toastr.error('image should be not more than 100kb', 'Employees', { timeOut: 3000 });
             this.url = '';
           } else {
             this.url = reader.result as string;
             this.myEvent = event;
+            console.log(event)
           }
         }
-
-
       }
     }
   }
+
+  /// Image with resize
+  onImageChange(event) {
+    if (event.target.files && event.target.files[0]) {
+      let image = event.target.files[0];
+      if (!event.target.files[0].name.match(/.(jpg|jpeg|png|gif)$/i)) {
+        this.toastr.error('image should be JPG|JPEG|PNG|GIF', 'Employees', { timeOut: 2000 });
+        // this.url = '';
+        this.load='';
+      }
+
+      else if (event.target.files[0].size > (3 * 1024 * 1000)) {
+        this.toastr.error('image should be not more than 3M', 'Employees', { timeOut: 2000 });
+        // this.url = '';
+        this.load='';
+      }
+      else {
+        this.load='ok'
+        this.ng2ImgMax.resizeImage(image, 500, 600).subscribe(
+          result => {
+            this.uploadedImage = new File([result], result.name);
+            this.reader.readAsDataURL(this.uploadedImage); // read file as data url
+            this.reader.onload = () => {
+              this.url = this.reader.result.toString()
+              this.myEvent = this.uploadedImage;
+              this.load='';
+            }
+          },
+          error => {
+            console.log('😢 Oh no!', error);
+          }
+        );
+      }
+
+    }
+
+  }
+
 
   show() {
     // if (!this.oldImage) {
