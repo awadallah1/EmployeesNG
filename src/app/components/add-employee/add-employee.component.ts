@@ -174,7 +174,7 @@ export class AddEmployeeComponent implements OnInit {
 
       }
     }
-
+//if form for edit
     if (valid && this.forEdit) {
       if (!this.myEvent) {
         this.employee.country = this.country;
